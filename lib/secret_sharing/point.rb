@@ -69,6 +69,7 @@ module SecretSharing
         raise ArgumentError, 'Secret is too long'
       end
       coefficients = SecretSharing::Polynomial.random_polynomial(point_threshold-1, secret_int, prime)
+      puts "Number of coefficients: #{coefficients.length}"
       SecretSharing::Polynomial.get_polynomial_points(coefficients, num_points, prime)
     end
   end
