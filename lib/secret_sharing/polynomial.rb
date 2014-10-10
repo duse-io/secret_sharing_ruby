@@ -27,7 +27,7 @@ module SecretSharing
 
     def get_polynomial_points(coefficients, num_points, prime)
       points = []
-      (1..num_points+1).each do |x|
+      (1..num_points).each do |x|
         y = coefficients[0]
         1..coefficients.length do |i|
           exponentiation = x**i % prime
