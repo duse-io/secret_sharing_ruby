@@ -7,10 +7,10 @@ Gem::Specification.new do |spec|
   spec.name          = "secret_sharing"
   spec.version       = SecretSharing::VERSION
   spec.authors       = ["flower-pot"]
-  spec.email         = ["flower-pot@flowerpot.io"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.email         = ["fbranczyk@gmail.com"]
+  spec.summary       = "Ruby implementation of sharmir's secret sharing"
+  spec.description   = "Securely share divide and reconstruct secrets."
+  spec.homepage      = "https://github.com/flower-pot/secret_sharing"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
