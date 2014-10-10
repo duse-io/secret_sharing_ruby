@@ -24,7 +24,7 @@ module SecretSharing
 
       x_share, y_share = share.split '-'
 
-      if x_share.diff(charset) or y_share.diff(charset)
+      if not x_share.diff(charset).empty? or not y_share.diff(charset).empty?
         raise ArgumentError, 'Share contains chars that are not in charset'
       end
       
@@ -69,8 +69,18 @@ module SecretSharing
         raise ArgumentError, 'Secret is too long'
       end
       coefficients = SecretSharing::Polynomial.random_polynomial(point_threshold-1, secret_int, prime)
-      puts "Number of coefficients: #{coefficients.length}"
       SecretSharing::Polynomial.get_polynomial_points(coefficients, num_points, prime)
+    end
+
+    def self.transpose(points)
+      x_values = []
+      y_values = []
+
+      points.each do |point|
+        x_values << point.x
+        y_values << point.y
+      end
+      [x_values, y_values]
     end
   end
 end

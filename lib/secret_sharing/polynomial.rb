@@ -40,7 +40,7 @@ module SecretSharing
     end
 
     def modular_lagrange_interpolation(x, points, prime)
-      x_values, y_values = points.transpose
+      x_values, y_values = Point.transpose(points)
       f_x = 0
       points.length.times do |i|
         numerator, denominator = 1, 1

@@ -19,10 +19,10 @@ module SecretSharing
   def recover_secret(shares)
     points = []
     shares.each do |share|
-      points << share_string_to_point(share, Charset::HEX)
+      points << Point.from_share(share, Charset::HEX)
     end
-    secret_int = points_to_secret_int(points)
-    secret_string = int_to_charset secret_int, Charset::PRINTABLE
+    secret_int = Point.to_secret_int(points)
+    secret_string = String.int_to_charset secret_int, Charset::PRINTABLE
   end
 
   module_function :split_secret, :recover_secret
