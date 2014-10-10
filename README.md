@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/flower-pot/secret_sharing.svg)](https://travis-ci.org/flower-pot/secret_sharing)
+[![Coverage Status](https://img.shields.io/coveralls/flower-pot/secret_sharing.svg)](https://coveralls.io/r/flower-pot/secret_sharing)
+
 # SecretSharing
 
 TODO: Write a gem description
