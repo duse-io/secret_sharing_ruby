@@ -3,7 +3,7 @@
 
 # SecretSharing
 
-TODO: Write a gem description
+A ruby implementation of shamir's secret sharing.
 
 ## Installation
 
@@ -21,7 +21,10 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+	require 'secret_sharing'
+	secret = "my secret"
+	shares = SecretSharing.split_secret(secret, 2, 5) # => [...] length 5
+	SecretSharing.recover_secret(shares[0..1]) # => "my secret"
 
 ## Contributing
 
