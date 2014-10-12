@@ -24,7 +24,7 @@ module SecretSharing
 
       x_share, y_share = share.split '-'
 
-      if not x_share.diff(charset).empty? or not y_share.diff(charset).empty?
+      if not x_share.in_charset?(charset) or not y_share.in_charset?(charset)
         raise ArgumentError, 'Share contains chars that are not in charset'
       end
       

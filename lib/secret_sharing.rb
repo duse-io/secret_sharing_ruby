@@ -7,11 +7,11 @@ require "secret_sharing/charset"
 
 module SecretSharing
   def split_secret(secret_string, share_threshold, num_shares)
-    secret_int = secret_string.charset_to_int Charset::PRINTABLE
+    secret_int = secret_string.charset_to_int Charset.printable
     points = Point.points_from_secret(secret_int, share_threshold, num_shares)
     shares = []
     points.each do |point|
-      shares << point.to_share(Charset::HEX)
+      shares << point.to_share(Charset.hex)
     end
     shares
   end
@@ -19,10 +19,10 @@ module SecretSharing
   def recover_secret(shares)
     points = []
     shares.each do |share|
-      points << Point.from_share(share, Charset::HEX)
+      points << Point.from_share(share, Charset.hex)
     end
     secret_int = Point.to_secret_int(points)
-    secret_string = String.int_to_charset secret_int, Charset::PRINTABLE
+    secret_string = String.int_to_charset secret_int, Charset.printable
   end
 
   module_function :split_secret, :recover_secret
