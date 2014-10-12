@@ -5,7 +5,6 @@ module SecretSharing
     end
 
     def rindex(key)
-      self.to_a.join.rindex key
       self.to_a.each_with_index do |char, index|
         return index if char == key
       end
