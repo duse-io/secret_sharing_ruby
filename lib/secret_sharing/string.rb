@@ -15,7 +15,7 @@ class String
   end
 
   def charset_to_int(charset)
-    if not self.in_charset?(charset)
+    if not charset.subset?(self)
       raise ArgumentError, 'contains chars that are not in charset'
     end
     output = 0
@@ -23,9 +23,5 @@ class String
       output = output * charset.length + charset.rindex(c)
     end
     output
-  end
-
-  def in_charset?(charset)
-    !!(Set.new(self.split(//).uniq) - charset)
   end
 end

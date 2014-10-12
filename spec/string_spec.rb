@@ -16,10 +16,4 @@ describe String do
       expect("correct horse battery staple".charset_to_int(SecretSharing::Charset.printable)).to eq(12242727141229941724272814941110292914273494282910252114)
     end
   end
-
-  context '#in_charset?' do
-    it 'should return an empty set' do
-      expect("test123".in_charset?(SecretSharing::Charset.printable)).to be(true)
-    end
-  end
 end
