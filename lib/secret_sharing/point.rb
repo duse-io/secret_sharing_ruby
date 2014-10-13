@@ -11,44 +11,19 @@ module SecretSharing
       @y = y
     end
 
-    def to_share(charset)
-      SecretSharing::Point.validate_charset(charset)
-      String.int_to_charset(@x, charset) + '-' + String.int_to_charset(@y, charset)
+    def to_share
+      Encoder.i_to_s(@x) + '-' + Encoder.i_to_s(@y)
     end
 
-    def self.from_share(share, charset)
-      validate_charset(charset)
-      if not (share.is_a?(String) and share.count('-') == 1)
-        raise ArgumentError, 'Share format is invalid'
-      end
-
+    def self.from_share(share)
       x_share, y_share = share.split '-'
-
-      if not charset.subset?(x_share) or not charset.subset?(y_share)
-        raise ArgumentError, 'Share contains chars that are not in charset'
-      end
-      
-      Point.new(x_share.charset_to_int(charset), y_share.charset_to_int(charset))
-    end
-
-    def self.validate_charset(charset)
-      if charset.include? '-'
-        raise ArgumentError, 'Charset cannot include "-"'
-      end
+      Point.new(Encoder.s_to_i(x_share), Encoder.s_to_i(y_share))
     end
 
     def self.to_secret_int(points)
-      if not points.is_a?(Array)
-        raise ArgumentError, 'Points must be an array'
-      end
-      
       x_values = []
       y_values = []
       points.each do |point|
-        if not point.is_a?(Point)
-          raise ArgumentError, 'Array must only contain points'
-        end
-        
         x_values << point.x
         y_values << point.y
       end
