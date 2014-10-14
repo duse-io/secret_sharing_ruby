@@ -54,7 +54,7 @@ module SecretSharing
 
   class HexEncoder < Encoder
     def self.charset
-      "0123456789abcdef".split(//)
+      "\u00000123456789abcdef".split(//)
     end
   end
 end
