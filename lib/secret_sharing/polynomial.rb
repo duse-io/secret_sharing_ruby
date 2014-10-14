@@ -29,7 +29,7 @@ module SecretSharing
       points = []
       (1..num_points).each do |x|
         y = coefficients[0]
-        1..coefficients.length do |i|
+        (1..(coefficients.length-1)).each do |i|
           exponentiation = x**i % prime
           term = (coefficients[i] * exponentiation) % prime
           y = (y + term) % prime

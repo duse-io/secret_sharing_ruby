@@ -11,13 +11,17 @@ module SecretSharing
       @y = y
     end
 
+    def inspect
+      "Point <x: #{x}, y: #{y}>"
+    end
+
     def to_share
-      Encoder.i_to_s(@x) + '-' + Encoder.i_to_s(@y)
+      @x.to_s + '-' + Encoder.i_to_s(@y)
     end
 
     def self.from_share(share)
       x_share, y_share = share.split '-'
-      Point.new(Encoder.s_to_i(x_share), Encoder.s_to_i(y_share))
+      Point.new(x_share.to_i, Encoder.s_to_i(y_share))
     end
 
     def self.to_secret_int(points)

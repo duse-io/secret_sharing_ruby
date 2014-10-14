@@ -7,12 +7,12 @@ describe SecretSharing do
       puts "\nRun ##{i}"
 
       secret = SecureRandom.base64(10)
-      num_of_shares = 2 + SecureRandom.random_number(10)
-
       puts "Secret: #{secret}"
-      puts "# of shares: #{num_of_shares}"
-
       shares = SecretSharing.split_secret(secret, 2, 3)
+      puts '--------------'
+      puts 'done splitting'
+      puts '--------------'
+      puts "Shares: #{shares}"
       expect(SecretSharing.recover_secret(shares[0..1])).to eq(secret)
     end
   end

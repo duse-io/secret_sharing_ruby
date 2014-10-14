@@ -1,18 +1,16 @@
 module SecretSharing
   module Encoder
-    UTF8_LENGTH = 1112064
-
     def i_to_s(x)
       if not (x.is_a?(Integer) && x >= 0)
         raise ArgumentError, 'x must be a non-negative integer'
       end
       if x == 0
-        return [0.to_s(16).hex].pack("U")
+        return codepoint_to_char(0)
       end
       output = ""
       while x > 0
-        x, codepoint = x.divmod(UTF8_LENGTH)
-        output.prepend([codepoint.to_s(16).hex].pack("U"))
+        x, codepoint = x.divmod(charset_length)
+        output.prepend(codepoint_to_char(codepoint))
       end
       output
     end
@@ -20,11 +18,27 @@ module SecretSharing
     def s_to_i(str)
       output = 0
       str.each_codepoint do |codepoint|
-        output = output * UTF8_LENGTH + codepoint
+        output = output * charset_length + codepoint
       end
       output
     end
 
-    module_function :i_to_s, :s_to_i
+    def codepoint_to_char(codepoint)
+      [codepoint.to_s(16).hex].pack("U")
+    end
+
+    def char_to_codepoint(char)
+      char.codepoints[0]
+    end
+
+    def charset_length
+      1112064
+    end
+
+    module_function :i_to_s,
+                    :s_to_i,
+                    :codepoint_to_char,
+                    :char_to_codepoint,
+                    :charset_length
   end
 end
