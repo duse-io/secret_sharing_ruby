@@ -16,12 +16,12 @@ module SecretSharing
     end
 
     def to_share
-      @x.to_s + '-' + Encoder.i_to_s(@y)
+      @x.to_s + '-' + HexEncoder.i_to_s(@y)
     end
 
     def self.from_share(share)
       x_share, y_share = share.split '-'
-      Point.new(x_share.to_i, Encoder.s_to_i(y_share))
+      Point.new(x_share.to_i, HexEncoder.s_to_i(y_share))
     end
 
     def self.to_secret_int(points)

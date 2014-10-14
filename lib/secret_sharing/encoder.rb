@@ -1,6 +1,6 @@
 module SecretSharing
-  module Encoder
-    def i_to_s(x)
+  class Encoder
+    def self.i_to_s(x)
       if not (x.is_a?(Integer) && x >= 0)
         raise ArgumentError, 'x must be a non-negative integer'
       end
@@ -15,30 +15,46 @@ module SecretSharing
       output
     end
 
-    def s_to_i(str)
+    def self.s_to_i(str)
       output = 0
-      str.each_codepoint do |codepoint|
-        output = output * charset_length + codepoint
+      str.each_char do |char|
+        output = output * charset_length + char_to_codepoint(char)
       end
       output
     end
 
-    def codepoint_to_char(codepoint)
-      [codepoint.to_s(16).hex].pack("U")
+    def self.codepoint_to_char(codepoint)
+      charset.each_with_index do |c, index|
+        return c if codepoint == index
+      end
+      raise ArgumentError, "Codepoint #{codepoint} does not exist in charset"
     end
 
-    def char_to_codepoint(char)
-      char.codepoints[0]
+    def self.char_to_codepoint(char)
+      charset.each_with_index do |c, index|
+        return index if char == c
+      end
+      raise ArgumentError, "Character \"#{char}\" not part of the supported charset"
     end
 
-    def charset_length
-      1112064
+    def self.charset_length
+      charset.length
     end
 
-    module_function :i_to_s,
-                    :s_to_i,
-                    :codepoint_to_char,
-                    :char_to_codepoint,
-                    :charset_length
+    def self.charset
+      raise NotImplementedError
+    end
+  end
+
+  class PrintableEncoder < Encoder
+    def self.charset
+      "\u00000123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"\#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r\v\f".split(//)
+    end
+  end
+
+  class HexEncoder < Encoder
+    def self.charset
+      "0123456789abcdef".split(//)
+    end
   end
 end
