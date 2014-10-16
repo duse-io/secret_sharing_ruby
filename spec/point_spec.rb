@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe SecretSharing::Point do
   context '#new' do
     it 'should error if the arguments are not integers' do

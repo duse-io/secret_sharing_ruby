@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe SecretSharing::Prime do
   context '#mersenne_primes' do
     it 'should calc the mersenne primes correctly' do
