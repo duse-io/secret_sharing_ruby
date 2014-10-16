@@ -15,44 +15,6 @@ module SecretSharing
       "#<Point: @x=#{x} @y=#{y}>"
     end
 
-    def to_share
-      @x.to_s + '-' + HexCharset.new.i_to_s(@y)
-    end
-
-    def self.from_share(share)
-      x_share = ""
-      y_share = ""
-      number_of_dashes = 0
-      share.reverse.each_char do |char|
-        number_of_dashes += 1 if char == '-'
-        y_share.prepend(char) if number_of_dashes == 0
-        x_share.prepend(char) if number_of_dashes == 1 && char != '-'
-        break if number_of_dashes >= 2
-      end
-      Point.new(x_share.to_i, HexCharset.new.s_to_i(y_share))
-    end
-
-    def self.to_secret_int(points)
-      x_values, y_values = transpose(points)
-      prime = SecretSharing::Prime.get_large_enough_prime(y_values)
-      SecretSharing::Polynomial.modular_lagrange_interpolation(0, points, prime)
-    end
-
-    def self.points_from_secret(secret_int, point_threshold, num_points)
-      if point_threshold < 2
-        raise ArgumentError, 'Threshold must be at least 2'
-      end
-      if point_threshold > num_points
-        raise ArgumentError, 'Threshold must be less than less than the total number of points'
-      end
-      prime = SecretSharing::Prime.get_large_enough_prime([secret_int, num_points])
-      if not prime
-        raise ArgumentError, 'Secret is too long'
-      end
-      coefficients = SecretSharing::Polynomial.random_polynomial(point_threshold-1, secret_int, prime)
-      SecretSharing::Polynomial.get_polynomial_points(coefficients, num_points, prime)
-    end
-
     def self.transpose(points)
       x_values = []
       y_values = []
