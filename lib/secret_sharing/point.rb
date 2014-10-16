@@ -16,22 +16,24 @@ module SecretSharing
     end
 
     def to_share
-      @x.to_s + '-' + HexEncoder.i_to_s(@y)
+      @x.to_s + '-' + HexEncoder.new.i_to_s(@y)
     end
 
     def self.from_share(share)
-      x_share, y_share = share.split '-'
-      Point.new(x_share.to_i, HexEncoder.s_to_i(y_share))
+      x_share = ""
+      y_share = ""
+      number_of_dashes = 0
+      share.reverse.each_char do |char|
+        number_of_dashes += 1 if char == '-'
+        y_share.prepend(char) if number_of_dashes == 0
+        x_share.prepend(char) if number_of_dashes == 1 && char != '-'
+        break if number_of_dashes >= 2
+      end
+      Point.new(x_share.to_i, HexEncoder.new.s_to_i(y_share))
     end
 
     def self.to_secret_int(points)
-      x_values = []
-      y_values = []
-      points.each do |point|
-        x_values << point.x
-        y_values << point.y
-      end
-
+      x_values, y_values = transpose(points)
       prime = SecretSharing::Prime.get_large_enough_prime(y_values)
       SecretSharing::Polynomial.modular_lagrange_interpolation(0, points, prime)
     end
