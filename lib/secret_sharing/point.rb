@@ -16,7 +16,7 @@ module SecretSharing
     end
 
     def to_share
-      @x.to_s + '-' + HexEncoder.new.i_to_s(@y)
+      @x.to_s + '-' + HexCharset.new.i_to_s(@y)
     end
 
     def self.from_share(share)
@@ -29,7 +29,7 @@ module SecretSharing
         x_share.prepend(char) if number_of_dashes == 1 && char != '-'
         break if number_of_dashes >= 2
       end
-      Point.new(x_share.to_i, HexEncoder.new.s_to_i(y_share))
+      Point.new(x_share.to_i, HexCharset.new.s_to_i(y_share))
     end
 
     def self.to_secret_int(points)

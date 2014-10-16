@@ -2,11 +2,11 @@ require "secret_sharing/version"
 require "secret_sharing/point"
 require "secret_sharing/polynomial"
 require "secret_sharing/prime"
-require "secret_sharing/encoder"
+require "secret_sharing/charset"
 
 module SecretSharing
   def split_secret(secret_string, share_threshold, num_shares)
-    encoder = Encoder.new(secret_string)
+    encoder = Charset.new(secret_string)
     secret_int = encoder.s_to_i(secret_string)
     points = Point.points_from_secret(secret_int, share_threshold, num_shares)
     shares = []
@@ -31,7 +31,7 @@ module SecretSharing
       end
       number_of_dashes += 1 if char == '-'
     end
-    secret_string = Encoder.new(charset).i_to_s(secret_int)
+    secret_string = Charset.new(charset).i_to_s(secret_int)
   end
 
   module_function :split_secret, :recover_secret

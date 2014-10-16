@@ -1,5 +1,5 @@
 module SecretSharing
-  class Encoder
+  class Charset
     def initialize(charset)
       @charset = ("\u0000" + charset).split(//).uniq
     end
@@ -10,7 +10,7 @@ module SecretSharing
       end
       output = ""
       while x > 0
-        x, codepoint = x.divmod(charset_length)
+        x, codepoint = x.divmod(length)
         output.prepend(codepoint_to_char(codepoint))
       end
       output
@@ -19,7 +19,7 @@ module SecretSharing
     def s_to_i(str)
       output = 0
       str.each_char do |char|
-        output = output * charset_length + char_to_codepoint(char)
+        output = output * length + char_to_codepoint(char)
       end
       output
     end
@@ -38,7 +38,7 @@ module SecretSharing
       raise ArgumentError, "Character \"#{char}\" not part of the supported charset"
     end
 
-    def charset_length
+    def length
       @charset.length
     end
 
@@ -47,7 +47,7 @@ module SecretSharing
     end
   end
 
-  class HexEncoder < Encoder
+  class HexCharset < Charset
     def initialize
       super "0123456789abcdef"
     end
