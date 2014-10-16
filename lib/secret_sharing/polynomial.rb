@@ -1,20 +1,22 @@
 module SecretSharing
-  module Polynomial
-    def egcd(a, b)
-      if a == 0
-        return [b, 0, 1]
+  class Polynomial
+    def initialize(coefficients)
+      @coefficients = coefficients
+    end
+
+    def points(num_points, prime)
+      (1..num_points).map do |x|
+        y = @coefficients[0]
+        (1..(@coefficients.length-1)).each do |i|
+          exponentiation = x**i % prime
+          term = (@coefficients[i] * exponentiation) % prime
+          y = (y + term) % prime
+        end
+        Point.new(x, y)
       end
-      g, y, x = egcd(b % a, a)
-      [g, x - b.div(a) * y, y]
     end
 
-    def mod_inverse(k, prime)
-      k = k % prime
-      r = egcd(prime, k.abs)[2]
-      (prime + r) % prime
-    end
-
-    def random_polynomial(degree, intercept, upper_bound)
+    def self.random(degree, intercept, upper_bound)
       if degree < 0
         raise ArgumentError, 'Degree must be a non-negative number'
       end
@@ -22,25 +24,28 @@ module SecretSharing
       degree.times do |i|
         coefficients << Random.new.rand(0..upper_bound-1)
       end
-      coefficients
+      Polynomial.new coefficients
     end
 
-    def get_polynomial_points(coefficients, num_points, prime)
-      points = []
-      (1..num_points).each do |x|
-        y = coefficients[0]
-        (1..(coefficients.length-1)).each do |i|
-          exponentiation = x**i % prime
-          term = (coefficients[i] * exponentiation) % prime
-          y = (y + term) % prime
-        end
-        points << Point.new(x, y)
+    def self.points_from_secret(secret_int, point_threshold, num_points)
+      if point_threshold < 2
+        raise ArgumentError, 'Threshold must be at least 2'
       end
-      points
+      if point_threshold > num_points
+        raise ArgumentError, 'Threshold must be less than less than the total number of points'
+      end
+      prime = SecretSharing::Prime.get_large_enough_prime([secret_int, num_points])
+      if not prime
+        raise ArgumentError, 'Secret is too long'
+      end
+      polynomial = SecretSharing::Polynomial.random(point_threshold-1, secret_int, prime)
+      polynomial.points(num_points, prime)
     end
 
-    def modular_lagrange_interpolation(x, points, prime)
+    def self.modular_lagrange_interpolation(points)
       x_values, y_values = Point.transpose(points)
+      prime = SecretSharing::Prime.get_large_enough_prime(y_values)
+      x = 0
       f_x = 0
       points.length.times do |i|
         numerator, denominator = 1, 1
@@ -55,10 +60,18 @@ module SecretSharing
       f_x
     end
 
-    module_function :egcd, 
-                    :mod_inverse,
-                    :random_polynomial,
-                    :get_polynomial_points,
-                    :modular_lagrange_interpolation
+    def self.mod_inverse(k, prime)
+      k = k % prime
+      r = egcd(prime, k.abs)[2]
+      (prime + r) % prime
+    end
+
+    def self.egcd(a, b)
+      if a == 0
+        return [b, 0, 1]
+      end
+      g, y, x = egcd(b % a, a)
+      [g, x - b.div(a) * y, y]
+    end
   end
 end
