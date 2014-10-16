@@ -43,7 +43,7 @@ module SecretSharing
     end
 
     def to_s
-      @charset.join
+      @charset[1..length-1].join
     end
   end
 
