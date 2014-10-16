@@ -6,15 +6,6 @@ module SecretSharing
       SecretSharing::Polynomial.modular_lagrange_interpolation(0, points, prime)
     end
 
-    def decode(shares)
-      points = shares.map do |share|
-        share.point
-      end
-      secret_int = points_to_secret_int(points)
-      shares.first.charset.i_to_s(secret_int)
-    end
-
-    module_function :points_to_secret_int,
-                    :decode
+    module_function :points_to_secret_int
   end
 end

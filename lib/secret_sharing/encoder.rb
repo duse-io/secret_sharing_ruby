@@ -15,16 +15,6 @@ module SecretSharing
       SecretSharing::Polynomial.get_polynomial_points(coefficients, num_points, prime)
     end
 
-    def encode(secret_string, share_threshold, num_shares)
-      charset = Charset.new(secret_string)
-      secret_int = charset.s_to_i(secret_string)
-      points = points_from_secret(secret_int, share_threshold, num_shares)
-      points.map do |point|
-        Share.new(charset, point).to_s
-      end
-    end
-
-    module_function :points_from_secret,
-                    :encode
+    module_function :points_from_secret
   end
 end
