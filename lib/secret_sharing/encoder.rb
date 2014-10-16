@@ -8,9 +8,6 @@ module SecretSharing
       if not (x.is_a?(Integer) && x >= 0)
         raise ArgumentError, 'x must be a non-negative integer'
       end
-      if x == 0
-        return codepoint_to_char(0)
-      end
       output = ""
       while x > 0
         x, codepoint = x.divmod(charset_length)

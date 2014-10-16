@@ -12,7 +12,7 @@ module SecretSharing
     end
 
     def inspect
-      "Point <x: #{x}, y: #{y}>"
+      "#<Point: @x=#{x} @y=#{y}>"
     end
 
     def to_share
