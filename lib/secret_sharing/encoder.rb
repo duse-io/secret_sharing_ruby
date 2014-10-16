@@ -1,9 +1,5 @@
 module SecretSharing
   module Encoder
-    def point_to_share(point)
-      point.x.to_s + '-' + HexCharset.new.i_to_s(point.y)
-    end
-
     def points_from_secret(secret_int, point_threshold, num_points)
       if point_threshold < 2
         raise ArgumentError, 'Threshold must be at least 2'
@@ -23,15 +19,12 @@ module SecretSharing
       charset = Charset.new(secret_string)
       secret_int = charset.s_to_i(secret_string)
       points = points_from_secret(secret_int, share_threshold, num_shares)
-      shares = []
-      points.each do |point|
-        shares << charset.to_s + '-' + point_to_share(point)
+      points.map do |point|
+        Share.new(charset, point).to_s
       end
-      shares
     end
 
     module_function :points_from_secret,
-                    :point_to_share,
                     :encode
   end
 end
