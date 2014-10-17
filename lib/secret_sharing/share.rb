@@ -16,7 +16,7 @@ module SecretSharing
       x_share = ""
       y_share = ""
       number_of_dashes = 0
-      share_string.split(//).reverse.each do |char|
+      share_string.chars.reverse.each do |char|
         y_share.prepend(char) if number_of_dashes == 0 && char != '-'
         x_share.prepend(char) if number_of_dashes == 1 && char != '-'
         charset_string.prepend(char) if number_of_dashes >= 2

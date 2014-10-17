@@ -17,27 +17,20 @@ module SecretSharing
     end
 
     def self.random(degree, intercept, upper_bound)
-      if degree < 0
-        raise ArgumentError, 'Degree must be a non-negative number'
-      end
-      coefficients = [intercept]
-      degree.times do |i|
+      raise ArgumentError, 'Degree must be a non-negative number' if degree < 0
+
+      coefficients = (0...degree).inject([intercept]) do |coefficients, i|
         coefficients << Random.new.rand(0..upper_bound-1)
       end
       Polynomial.new coefficients
     end
 
     def self.points_from_secret(secret_int, point_threshold, num_points)
-      if point_threshold < 2
-        raise ArgumentError, 'Threshold must be at least 2'
-      end
-      if point_threshold > num_points
-        raise ArgumentError, 'Threshold must be less than less than the total number of points'
-      end
       prime = SecretSharing::Prime.get_large_enough_prime([secret_int, num_points])
-      if not prime
-        raise ArgumentError, 'Secret is too long'
-      end
+      raise ArgumentError, 'Secret is too long' if not prime
+      raise ArgumentError, 'Threshold must be at least 2' if point_threshold < 2
+      raise ArgumentError, 'Threshold must be less than less than the total number of points' if point_threshold > num_points
+
       polynomial = SecretSharing::Polynomial.random(point_threshold-1, secret_int, prime)
       polynomial.points(num_points, prime)
     end
@@ -64,9 +57,7 @@ module SecretSharing
     end
 
     def self.egcd(a, b) # extended Euclidean algorithm
-      if a == 0
-        return [b, 0, 1]
-      end
+      return [b, 0, 1] if a == 0
       g, y, x = egcd(b % a, a)
       [g, x - b.div(a) * y, y]
     end

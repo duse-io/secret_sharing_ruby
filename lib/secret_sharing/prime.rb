@@ -4,14 +4,12 @@ module SecretSharing
       mersenne_prime_exponents = [
         2, 3, 5, 7, 13, 17, 19, 31, 61, 89, 107, 127, 521, 607, 1279
       ]
-      primes = []
-      mersenne_prime_exponents.each do |exp|
+      mersenne_prime_exponents.map do |exp|
         prime = 1
         prime *= 2**exp
         prime -= 1
-        primes << prime
+        prime
       end
-      primes
     end
 
     def get_large_enough_prime(batch)
@@ -25,9 +23,7 @@ module SecretSharing
 
       standard_primes.each do |prime|
         greater_than_prime = Array.new(batch).select {|i| i if i > prime}
-        if greater_than_prime.length == 0
-          return prime
-        end
+        return prime if greater_than_prime.length == 0
       end
       return nil
     end

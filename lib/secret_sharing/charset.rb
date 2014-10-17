@@ -1,13 +1,12 @@
 module SecretSharing
   class Charset
     def initialize(charset)
-      @charset = ("\u0000" + charset).split(//).uniq
+      @charset = ("\u0000" + charset).chars.uniq
     end
 
     def i_to_s(x)
-      if not (x.is_a?(Integer) && x >= 0)
-        raise ArgumentError, 'x must be a non-negative integer'
-      end
+      raise ArgumentError, 'x must be a non-negative integer' if not (x.is_a?(Integer) && x >= 0)
+
       output = ""
       while x > 0
         x, codepoint = x.divmod(length)
@@ -17,11 +16,9 @@ module SecretSharing
     end
 
     def s_to_i(str)
-      output = 0
-      str.each_char do |char|
+      str.chars.inject(0) do |output, char|
         output = output * length + char_to_codepoint(char)
       end
-      output
     end
 
     def codepoint_to_char(codepoint)
