@@ -45,19 +45,16 @@ module SecretSharing
     def self.modular_lagrange_interpolation(points)
       x_values, y_values = Point.transpose(points)
       prime = SecretSharing::Prime.get_large_enough_prime(y_values)
-      x = 0
-      f_x = 0
-      points.length.times do |i|
+      (0...points.length).inject(0) do |f_x, i|
         numerator, denominator = 1, 1
         points.length.times do |j|
           next if i == j
-          numerator = (numerator * (x - x_values[j])) % prime
+          numerator = (numerator * (0 - x_values[j])) % prime
           denominator = (denominator * (x_values[i] - x_values[j])) % prime
         end
         lagrange_polynomial = numerator * mod_inverse(denominator, prime)
         f_x = (prime + f_x + (y_values[i] * lagrange_polynomial)) % prime
       end
-      f_x
     end
 
     def self.mod_inverse(k, prime)
@@ -66,7 +63,7 @@ module SecretSharing
       (prime + r) % prime
     end
 
-    def self.egcd(a, b)
+    def self.egcd(a, b) # extended Euclidean algorithm
       if a == 0
         return [b, 0, 1]
       end
