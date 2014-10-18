@@ -44,9 +44,17 @@ module SecretSharing
     end
   end
 
-  class HexCharset < Charset
-    def initialize
-      super '0123456789abcdef'
+  class HexCharset
+    def i_to_s(x)
+      x.to_s(16)
+    end
+
+    def s_to_i(str)
+      str.to_i(16)
+    end
+
+    def length
+      16
     end
   end
 end
