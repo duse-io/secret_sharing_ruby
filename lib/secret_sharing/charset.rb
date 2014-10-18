@@ -22,16 +22,14 @@ module SecretSharing
     end
 
     def codepoint_to_char(codepoint)
-      @charset.each_with_index do |c, index|
-        return c if codepoint == index
-      end
+      char = @charset[codepoint]
+      return char unless char.nil?
       raise ArgumentError, "Codepoint #{codepoint} does not exist in charset"
     end
 
     def char_to_codepoint(char)
-      @charset.each_with_index do |c, index|
-        return index if char == c
-      end
+      codepoint = @charset.rindex char
+      return codepoint unless codepoint.nil?
       raise ArgumentError, "Character \"#{char}\" not part of the supported charset"
     end
 
