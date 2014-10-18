@@ -5,9 +5,11 @@ module SecretSharing
     end
 
     def i_to_s(x)
-      raise ArgumentError, 'x must be a non-negative integer' if not (x.is_a?(Integer) && x >= 0)
+      unless x.is_a?(Integer) && x >= 0
+        fail ArgumentError, 'x must be a non-negative integer'
+      end
 
-      output = ""
+      output = ''
       while x > 0
         x, codepoint = x.divmod(length)
         output.prepend(codepoint_to_char(codepoint))
@@ -16,21 +18,21 @@ module SecretSharing
     end
 
     def s_to_i(str)
-      str.chars.inject(0) do |output, char|
-        output = output * length + char_to_codepoint(char)
+      str.chars.reduce(0) do |output, char|
+        output * length + char_to_codepoint(char)
       end
     end
 
     def codepoint_to_char(codepoint)
       char = @charset[codepoint]
       return char unless char.nil?
-      raise ArgumentError, "Codepoint #{codepoint} does not exist in charset"
+      fail ArgumentError, "Codepoint #{codepoint} does not exist in charset"
     end
 
     def char_to_codepoint(char)
       codepoint = @charset.rindex char
       return codepoint unless codepoint.nil?
-      raise ArgumentError, "Character \"#{char}\" not part of the supported charset"
+      fail ArgumentError, "Character \"#{char}\" not part of the supported charset"
     end
 
     def length
@@ -38,13 +40,13 @@ module SecretSharing
     end
 
     def to_s
-      @charset[1..length-1].join
+      @charset[1...length].join
     end
   end
 
   class HexCharset < Charset
     def initialize
-      super "0123456789abcdef"
+      super '0123456789abcdef'
     end
   end
 end

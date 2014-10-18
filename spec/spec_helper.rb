@@ -15,7 +15,7 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-if not ENV['CI']
+unless ENV['CI']
   require 'simplecov'
   SimpleCov.start
 end

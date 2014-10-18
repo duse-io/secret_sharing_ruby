@@ -1,12 +1,11 @@
-require "secret_sharing/version"
-require "secret_sharing/point"
-require "secret_sharing/polynomial"
-require "secret_sharing/prime"
-require "secret_sharing/charset"
-require "secret_sharing/share"
+require 'secret_sharing/version'
+require 'secret_sharing/point'
+require 'secret_sharing/polynomial'
+require 'secret_sharing/prime'
+require 'secret_sharing/charset'
+require 'secret_sharing/share'
 
 module SecretSharing
-
   # Public: Split a secret using Shamir's Secret Sharing algorithm.
   #
   # secret_string   - The secret to split.
@@ -43,9 +42,7 @@ module SecretSharing
     shares = raw_shares.map do |raw_share|
       Share.from_string raw_share
     end
-    points = shares.map do |share|
-      share.point
-    end
+    points = shares.map(&:point)
     secret_int = SecretSharing::Polynomial.modular_lagrange_interpolation(points)
     shares.first.charset.i_to_s(secret_int)
   end

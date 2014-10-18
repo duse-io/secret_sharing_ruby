@@ -1,10 +1,10 @@
 module SecretSharing
   class Point
     attr_accessor :x, :y
-    
+
     def initialize(x, y)
-      if not (x.is_a?(Integer) && y.is_a?(Integer))
-        raise ArgumentError, 'Coordinates must be integers' 
+      unless x.is_a?(Integer) && y.is_a?(Integer)
+        fail ArgumentError, 'Coordinates must be integers'
       end
 
       @x = x

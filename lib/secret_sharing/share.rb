@@ -12,9 +12,9 @@ module SecretSharing
     end
 
     def self.from_string(share_string)
-      charset_string = ""
-      x_share = ""
-      y_share = ""
+      charset_string = ''
+      x_share = ''
+      y_share = ''
       number_of_dashes = 0
       share_string.chars.reverse.each do |char|
         y_share.prepend(char) if number_of_dashes == 0 && char != '-'

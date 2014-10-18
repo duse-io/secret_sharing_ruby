@@ -7,7 +7,7 @@ module SecretSharing
     def points(num_points, prime)
       (1..num_points).map do |x|
         y = @coefficients[0]
-        (1..(@coefficients.length-1)).each do |i|
+        (1...@coefficients.length).each do |i|
           exponentiation = x**i % prime
           term = (@coefficients[i] * exponentiation) % prime
           y = (y + term) % prime
@@ -17,31 +17,31 @@ module SecretSharing
     end
 
     def self.random(degree, intercept, upper_bound)
-      raise ArgumentError, 'Degree must be a non-negative number' if degree < 0
+      fail ArgumentError, 'Degree must be a non-negative number' if degree < 0
 
-      coefficients = (0...degree).inject([intercept]) do |coefficients, i|
-        coefficients << Random.new.rand(0..upper_bound-1)
+      coefficients = (0...degree).reduce([intercept]) do |accumulator, _i|
+        accumulator << Random.new.rand(0...upper_bound)
       end
       Polynomial.new coefficients
     end
 
     def self.points_from_secret(secret_int, point_threshold, num_points)
-      prime = SecretSharing::Prime.get_large_enough_prime([secret_int, num_points])
-      raise ArgumentError, 'Secret is too long' if not prime
-      raise ArgumentError, 'Threshold must be at least 2' if point_threshold < 2
-      raise ArgumentError, 'Threshold must be less than less than the total number of points' if point_threshold > num_points
+      prime = SecretSharing::Prime.large_enough_prime([secret_int, num_points])
+      fail ArgumentError, 'Secret is too long' if prime.nil?
+      fail ArgumentError, 'Threshold must be at least 2' if point_threshold < 2
+      fail ArgumentError, 'Threshold must be less than less than the total number of points' if point_threshold > num_points
 
-      polynomial = SecretSharing::Polynomial.random(point_threshold-1, secret_int, prime)
+      polynomial = SecretSharing::Polynomial.random(point_threshold - 1, secret_int, prime)
       polynomial.points(num_points, prime)
     end
 
     def self.modular_lagrange_interpolation(points)
       y_values = Point.transpose(points)[1]
-      prime = SecretSharing::Prime.get_large_enough_prime(y_values)
-      points.inject(0) do |f_x, point|
+      prime = SecretSharing::Prime.large_enough_prime(y_values)
+      points.reduce(0) do |f_x, point|
         numerator, denominator = lagrange_fraction(points, point, prime)
         lagrange_polynomial = numerator * mod_inverse(denominator, prime)
-        f_x = (prime + f_x + (point.y * lagrange_polynomial)) % prime
+        (prime + f_x + (point.y * lagrange_polynomial)) % prime
       end
     end
 
