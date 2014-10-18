@@ -36,18 +36,24 @@ module SecretSharing
     end
 
     def self.modular_lagrange_interpolation(points)
-      x_values, y_values = Point.transpose(points)
+      y_values = Point.transpose(points)[1]
       prime = SecretSharing::Prime.get_large_enough_prime(y_values)
-      (0...points.length).inject(0) do |f_x, i|
-        numerator, denominator = 1, 1
-        points.length.times do |j|
-          next if i == j
-          numerator = (numerator * (0 - x_values[j])) % prime
-          denominator = (denominator * (x_values[i] - x_values[j])) % prime
-        end
+      points.inject(0) do |f_x, point|
+        numerator, denominator = lagrange_fraction(points, point, prime)
         lagrange_polynomial = numerator * mod_inverse(denominator, prime)
-        f_x = (prime + f_x + (y_values[i] * lagrange_polynomial)) % prime
+        f_x = (prime + f_x + (point.y * lagrange_polynomial)) % prime
       end
+    end
+
+    def self.lagrange_fraction(points, current, prime)
+      numerator, denominator = 1, 1
+      points.each do |point|
+        if point != current
+          numerator = (numerator * (0 - point.x)) % prime
+          denominator = (denominator * (current.x - point.x)) % prime
+        end
+      end
+      [numerator, denominator]
     end
 
     def self.mod_inverse(k, prime)
