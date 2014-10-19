@@ -1,1 +1,1 @@
-lib/**/*.rb --plugin yard-tomdoc --no-private - README.md LICENSE
+lib/**/*.rb --no-private --markup markdown - README.md LICENSE
