@@ -15,8 +15,8 @@ module SecretSharing
   #
   # Example
   #
-  #   SecretSharing.split_secret("my secret", 2, 3)
-  #   # => ["my secrt-1-0ff4693f", "my secrt-2-2da39008", "my secrt-3-75bd29a"]
+  #   SecretSharing.split_secret('secret', 2, 3)
+  #   # => ["tcesr-1-4e16", "tcesr-2-1105", "tcesr-3-1d3f3"]
   #
   # Returns an array of shares that can be used to recover the secret
   def split_secret(secret_string, share_threshold, num_shares)
@@ -36,8 +36,8 @@ module SecretSharing
   #
   # Example
   #
-  #   SecretSharing.recover_secret(["my secrt-1-0ff4693f", "my secrt-2-2da39008"])
-  #   # => "my secret"
+  #   SecretSharing.recover_secret(["tcesr-1-4e16", "tcesr-2-1105"])
+  #   # => "secret"
   #
   # Returns the recovered secret in a string representation
   def recover_secret(raw_shares)

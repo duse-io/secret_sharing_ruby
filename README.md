@@ -23,9 +23,9 @@ Or install it yourself as:
 ## Usage
 
 	require 'secret_sharing'
-	shares = SecretSharing.split_secret("my secret", 2, 5) # => [...]
-	length = shares.length # => 5
-	secret = SecretSharing.recover_secret(shares[0..1]) # => "my secret"
+	shares = SecretSharing.split_secret('secret', 2, 3) # => [...]
+	length = shares.length # => 3
+	secret = SecretSharing.recover_secret(shares[0..1]) # => 'my secret'
 
 ## Contributing
 
