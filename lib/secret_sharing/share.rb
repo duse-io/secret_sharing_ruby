@@ -23,7 +23,7 @@ module SecretSharing
         number_of_dashes += 1 if char == '-'
       end
 
-      charset = Charset.new charset_string
+      charset = Charset.new charset_string.chars
       point = Point.new(x_share.to_i, HexCharset.new.s_to_i(y_share))
       Share.new(charset, point)
     end

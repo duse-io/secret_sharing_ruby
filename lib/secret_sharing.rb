@@ -20,7 +20,7 @@ module SecretSharing
   #
   # Returns an array of shares that can be used to recover the secret
   def split_secret(secret_string, share_threshold, num_shares)
-    charset = Charset.new(secret_string)
+    charset = Charset.from_string secret_string
     secret_int = charset.s_to_i(secret_string)
     points = Polynomial.points_from_secret(secret_int, share_threshold, num_shares)
     points.map do |point|

@@ -1,7 +1,11 @@
 module SecretSharing
   class Charset
     def initialize(charset)
-      @charset = ("\u0000" + charset).chars.uniq
+      @charset = charset.unshift("\u0000")
+    end
+
+    def self.from_string(charset_string)
+      Charset.new charset_string.chars.shuffle.uniq
     end
 
     def i_to_s(x)
@@ -51,10 +55,6 @@ module SecretSharing
 
     def s_to_i(str)
       str.to_i(16)
-    end
-
-    def length
-      16
     end
   end
 end
