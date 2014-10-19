@@ -34,9 +34,7 @@ describe SecretSharing::HexCharset do
     it 'should be able to decode randomly generated encoded strings' do
       50.times do
         str = SecureRandom.hex(100)
-        while str[0] == '0'
-          str = SecureRandom.hex(100)
-        end
+        str = SecureRandom.hex(100) while str[0] == '0'
         encoded = SecretSharing::HexCharset.new.s_to_i(str)
         decoded = SecretSharing::HexCharset.new.i_to_s(encoded)
         expect(decoded).to eq(str)
