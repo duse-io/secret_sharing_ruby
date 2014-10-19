@@ -14,6 +14,6 @@ Gem::Specification.new do |spec|
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
-  spec.test_files    = spec.files.grep(%r{^(spec)/})
+  spec.test_files    = `git ls-files spec`.split($INPUT_RECORD_SEPARATOR)
   spec.require_paths = ['lib']
 end
