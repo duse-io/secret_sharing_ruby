@@ -13,13 +13,10 @@ module SecretSharing
     end
 
     def large_enough_prime(batch)
-      smallest_257bit_prime = (2**256 + 297)
-      smallest_321bit_prime = (2**320 + 27)
-      smallest_385bit_prime = (2**384 + 231)
       standard_primes = mersenne_primes + [
-        smallest_257bit_prime, smallest_321bit_prime, smallest_385bit_prime
-      ]
-      standard_primes.sort
+        # smallest 257, 321 and 385 bit primes
+        2**256 + 297, 2**320 + 27, 2**384 + 231
+      ].sort
 
       standard_primes.each do |prime|
         greater_than_prime = Array.new(batch).select { |i| i if i > prime }

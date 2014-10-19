@@ -33,10 +33,10 @@ module SecretSharing
       fail ArgumentError, "Codepoint #{codepoint} does not exist in charset"
     end
 
-    def char_to_codepoint(char)
-      codepoint = @charset.rindex char
+    def char_to_codepoint(c)
+      codepoint = @charset.rindex c
       return codepoint unless codepoint.nil?
-      fail ArgumentError, "Character \"#{char}\" not part of the supported charset"
+      fail ArgumentError, "Character \"#{c}\" not part of the supported charset"
     end
 
     def length

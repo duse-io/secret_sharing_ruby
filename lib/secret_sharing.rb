@@ -22,7 +22,9 @@ module SecretSharing
   def split_secret(secret_string, share_threshold, num_shares)
     charset = Charset.from_string secret_string
     secret_int = charset.s_to_i(secret_string)
-    points = Polynomial.points_from_secret(secret_int, share_threshold, num_shares)
+    points = Polynomial.points_from_secret(secret_int,
+                                           share_threshold,
+                                           num_shares)
     points.map do |point|
       Share.new(charset, point).to_s
     end

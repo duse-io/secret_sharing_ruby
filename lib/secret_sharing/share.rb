@@ -12,9 +12,14 @@ module SecretSharing
     end
 
     def self.from_string(share_string)
-      charset_string = ''
-      x_share = ''
-      y_share = ''
+      charset_string, x_share, y_share = parse share_string
+      charset = Charset.new charset_string.chars
+      point = Point.new(x_share.to_i, HexCharset.new.s_to_i(y_share))
+      Share.new(charset, point)
+    end
+
+    def self.parse(share_string)
+      charset_string, x_share, y_share = '', '', ''
       number_of_dashes = 0
       share_string.chars.reverse.each do |char|
         y_share.prepend(char) if number_of_dashes == 0 && char != '-'
@@ -22,10 +27,7 @@ module SecretSharing
         charset_string.prepend(char) if number_of_dashes >= 2
         number_of_dashes += 1 if char == '-'
       end
-
-      charset = Charset.new charset_string.chars
-      point = Point.new(x_share.to_i, HexCharset.new.s_to_i(y_share))
-      Share.new(charset, point)
+      [charset_string, x_share, y_share]
     end
   end
 end

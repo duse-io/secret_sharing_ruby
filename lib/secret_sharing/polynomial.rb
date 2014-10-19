@@ -31,7 +31,9 @@ module SecretSharing
       fail ArgumentError, 'Threshold must be at least 2' if point_threshold < 2
       fail ArgumentError, 'Threshold must be less than less than the total number of points' if point_threshold > num_points
 
-      polynomial = SecretSharing::Polynomial.random(point_threshold - 1, secret_int, prime)
+      polynomial = SecretSharing::Polynomial.random(point_threshold - 1,
+                                                    secret_int,
+                                                    prime)
       polynomial.points(num_points, prime)
     end
 
