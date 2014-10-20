@@ -4,8 +4,8 @@
 
 # SecretSharing
 
-> **Warning:** This implementation has not been tested in production nor has it been examined by a security audit.
-> All uses are your own responsibility.
+> **Warning:** This implementation has not been tested in production nor has it
+> been examined by a security audit. All uses are your own responsibility.
 
 A ruby implementation of shamir's secret sharing.
 
@@ -29,6 +29,17 @@ Or install it yourself as:
 	shares = SecretSharing.split_secret('secret', 2, 3) # => [...]
 	length = shares.length # => 3
 	secret = SecretSharing.recover_secret(shares[0..1]) # => 'my secret'
+
+This implementation can also handle non-ascii characters, however, the charset
+will be visible in the calculated shares. Thus splitting ascii only strings is
+"more" secure.
+
+## Compatible libraries
+
+Since this implementation is special in some ways most [Shamir’s Secret
+Sharing](http://de.wikipedia.org/wiki/Shamir%E2%80%99s_Secret_Sharing)
+libraries are not compatible. The only library that is compatible as of now is
+[Adracus/secret-sharing-dart](https://github.com/Adracus/secret-sharing-dart).
 
 ## Contributing
 
