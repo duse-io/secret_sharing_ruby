@@ -22,7 +22,7 @@ module SecretSharing
   #
   # @return [Array] Array of shares that can be used to recover the secret.
   def split_secret(secret_string, share_threshold, num_shares)
-    charset = Charset.from_string secret_string
+    charset = Charset.by_string secret_string
     secret_int = charset.s_to_i(secret_string)
     points = Polynomial.points_from_secret(secret_int,
                                            share_threshold,
@@ -40,7 +40,7 @@ module SecretSharing
   #   SecretSharing.recover_secret(["tcesr-1-4e16", "tcesr-2-1105"])
   #   # => "secret"
   #
-  # @param raw_shares [String] Shares to recover the secret in form of an array of strings
+  # @param raw_shares [Array] Shares (array of strings) to recover the secret
   #
   # @return [String] Recovered secret in a string representation.
   def recover_secret(raw_shares)
@@ -48,7 +48,7 @@ module SecretSharing
       Share.from_string raw_share
     end
     points = shares.map(&:point)
-    secret_int = SecretSharing::Polynomial.modular_lagrange_interpolation(points)
+    secret_int = Polynomial.modular_lagrange_interpolation(points)
     shares.first.charset.i_to_s(secret_int)
   end
 

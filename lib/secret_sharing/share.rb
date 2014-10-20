@@ -13,7 +13,7 @@ module SecretSharing
 
     def self.from_string(share_string)
       charset_string, x_share, y_share = parse share_string
-      charset = Charset.new charset_string.chars
+      charset = Charset.by_charset_string charset_string
       point = Point.new(x_share.to_i, HexCharset.new.s_to_i(y_share))
       Share.new(charset, point)
     end
