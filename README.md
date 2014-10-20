@@ -4,6 +4,9 @@
 
 # SecretSharing
 
+> **Warning:** This implementation has not been tested in production nor has it been examined by a security audit.
+> All uses are your own responsibility.
+
 A ruby implementation of shamir's secret sharing.
 
 ## Installation
