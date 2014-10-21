@@ -1,12 +1,42 @@
 require 'set'
 
 module SecretSharing
+  # This module is used to create or retrieve a charset to use.
   module Charset
+    # Decides which charset fits the provided string best and creates a custom
+    # charset if no predefined charset fits the usecase.
+    #
+    # Example
+    #
+    #   SecretSharing::Charset.by_string 'test'
+    #   # => #<SecretSharing::ASCIICharset:0x0000000 @charset=[...]>
+    #
+    # Or with a custom charset
+    #
+    #   SecretSharing::Charset.by_string 'testä'
+    #   # => #<SecretSharing::DynamicCharset:0x0000000 @charset=["..."]>
+    #
+    # @param string [String] The string to evaluate the charset for.
+    # @return A charset that has at least the methods #s_to_i and #i_to_s.
     def by_string(string)
       return ASCIICharset.new if ASCIICharset.new.subset?(string)
       DynamicCharset.from_string string
     end
 
+    # Retrieves a charset based on its string representation.
+    #
+    # Example
+    #
+    #   SecretSharing::Charset.by_charset_string '$$ASCII'
+    #   # => #<SecretSharing::ASCIICharset:0x0000000 @charset=[...]>
+    #
+    # Or in case of a custom charset
+    #
+    #   SecretSharing::Charset.by_charset_string 'tesä'
+    #   # => #<SecretSharing::DynamicCharset:0x0000000 @charset=["..."]>
+    #
+    # @param string [String] The string to evaluate the charset for.
+    # @return A charset that has at least the methods #s_to_i and #i_to_s.
     def by_charset_string(charset_string)
       charsets = {
         '$$ASCII' => ASCIICharset.new
