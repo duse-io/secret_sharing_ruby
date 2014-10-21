@@ -35,7 +35,7 @@ module SecretSharing
     #   # => "$$ASCII-1-2"
     #
     def to_s
-      charset.to_s + '-' + @point.x.to_s + '-' + HexCharset.new.i_to_s(@point.y)
+      charset.to_s + '-' + @point.x.to_s + '-' + @point.y.to_s(16)
     end
 
     # Creates a share object from its string representation.
@@ -48,7 +48,7 @@ module SecretSharing
     def self.from_string(share_string)
       charset_string, x_share, y_share = parse share_string
       charset = Charset.by_charset_string charset_string
-      point = Point.new(x_share.to_i, HexCharset.new.s_to_i(y_share))
+      point = Point.new(x_share.to_i, y_share.to_i(16))
       Share.new(charset, point)
     end
 

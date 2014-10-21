@@ -20,6 +20,7 @@ module SecretSharing
     # @return A charset that has at least the methods #s_to_i and #i_to_s.
     def by_string(string)
       return ASCIICharset.new if ASCIICharset.new.subset?(string)
+      return HexCharset.new if HexCharset.new.subset?(string)
       DynamicCharset.from_string string
     end
 
@@ -30,6 +31,9 @@ module SecretSharing
     #   SecretSharing::Charset.by_charset_string '$$ASCII'
     #   # => #<SecretSharing::ASCIICharset:0x0000000 @charset=[...]>
     #
+    #   SecretSharing::Charset.by_charset_string '$$HEX'
+    #   # => #<SecretSharing::HexCharset:0x0000000 @charset=[...]>
+    #
     # Or in case of a custom charset
     #
     #   SecretSharing::Charset.by_charset_string 'tesä'
@@ -39,7 +43,8 @@ module SecretSharing
     # @return A charset that has at least the methods #s_to_i and #i_to_s.
     def by_charset_string(charset_string)
       charsets = {
-        '$$ASCII' => ASCIICharset.new
+        '$$ASCII' => ASCIICharset.new,
+        '$$HEX'   => HexCharset.new
       }
       result_charset = charsets[charset_string]
       result_charset || DynamicCharset.new(charset_string.chars)
@@ -112,13 +117,13 @@ module SecretSharing
     end
   end
 
-  class HexCharset
-    def i_to_s(x)
-      x.to_s(16)
+  class HexCharset < DynamicCharset
+    def initialize
+      super (0..15).to_a.map { |i| i.to_s(16) }
     end
 
-    def s_to_i(str)
-      str.to_i(16)
+    def to_s
+      '$$HEX'
     end
   end
 end
