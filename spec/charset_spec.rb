@@ -30,19 +30,19 @@ describe SecretSharing::Charset do
 
     it 'should return the correct charset for "$$ASCII"' do
       charset = SecretSharing::Charset.by_charset_string('$$ASCII')
-      expect(charset).to be_a SecretSharing::ASCIICharset
+      expect(charset).to be_a SecretSharing::Charset::ASCIICharset
     end
   end
 end
 
-describe SecretSharing::HexCharset do
+describe SecretSharing::Charset::HexCharset do
   context 'encode and decode' do
     it 'should be able to decode randomly generated encoded strings' do
       50.times do
         str = SecureRandom.hex(100)
         str = SecureRandom.hex(100) while str[0] == '0'
-        encoded = SecretSharing::HexCharset.new.s_to_i(str)
-        decoded = SecretSharing::HexCharset.new.i_to_s(encoded)
+        encoded = SecretSharing::Charset::HexCharset.new.s_to_i(str)
+        decoded = SecretSharing::Charset::HexCharset.new.i_to_s(encoded)
         expect(decoded).to eq(str)
       end
     end
