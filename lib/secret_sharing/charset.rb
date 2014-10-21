@@ -35,7 +35,7 @@ module SecretSharing
     #   SecretSharing::Charset.by_charset_string 'tesä'
     #   # => #<SecretSharing::DynamicCharset:0x0000000 @charset=["..."]>
     #
-    # @param string [String] The string to evaluate the charset for.
+    # @param charset_string [String] The string to evaluate the charset for.
     # @return A charset that has at least the methods #s_to_i and #i_to_s.
     def by_charset_string(charset_string)
       charsets = {
