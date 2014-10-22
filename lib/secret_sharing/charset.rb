@@ -19,8 +19,8 @@ module SecretSharing
     # @param string [String] The string to evaluate the charset for.
     # @return A charset that has at least the methods #s_to_i and #i_to_s.
     def by_string(string)
-      return ASCIICharset.new if ASCIICharset.new.subset?(string)
       return HexCharset.new if HexCharset.new.subset?(string)
+      return ASCIICharset.new if ASCIICharset.new.subset?(string)
       DynamicCharset.from_string string
     end
 
@@ -43,8 +43,8 @@ module SecretSharing
     # @return A charset that has at least the methods #s_to_i and #i_to_s.
     def by_charset_string(charset_string)
       charsets = {
-        '$$ASCII' => ASCIICharset.new,
-        '$$HEX'   => HexCharset.new
+        '$$HEX'   => HexCharset.new,
+        '$$ASCII' => ASCIICharset.new
       }
       result_charset = charsets[charset_string]
       result_charset || DynamicCharset.new(charset_string.chars)
