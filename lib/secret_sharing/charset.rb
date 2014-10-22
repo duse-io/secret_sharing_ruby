@@ -55,6 +55,8 @@ module SecretSharing
   end
 
   module Charset
+    # This objects of this class can represent a custom charset whenever the
+    # predefined charsets do not fit a situation.
     class DynamicCharset
       def initialize(charset)
         @charset = charset.unshift("\u0000")

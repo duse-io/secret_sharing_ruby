@@ -33,6 +33,15 @@ module SecretSharing
       "#<Point: @x=#{x} @y=#{y}>"
     end
 
+    def to_s
+      "#{x}-#{y.to_s(16)}"
+    end
+
+    def self.from_string(point_string)
+      x_string, y_string = point_string.split '-'
+      Point.new x_string.to_i, y_string.to_i(16)
+    end
+
     # An implementation similar to Array#transpose for Arrays of Points
     #
     # @return [Array] Two Arrays in an Array

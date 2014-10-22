@@ -36,7 +36,7 @@ module SecretSharing
     #   # => "$$ASCII-1-2"
     #
     def to_s
-      charset.to_s + '-' + @point.x.to_s + '-' + @point.y.to_s(16)
+      charset.to_s + '-' + point.to_s
     end
 
     # Creates a share object from its string representation.
@@ -47,35 +47,34 @@ module SecretSharing
     #   # => #<SecretSharing::Share:0x0000000 @charset=..., @point=...>
     #
     def self.from_string(share_string)
-      charset_string, x_share, y_share = parse share_string
+      charset_string, point_string = parse share_string
       charset = Charset.by_charset_string charset_string
-      point = Point.new(x_share.to_i, y_share.to_i(16))
+      point = Point.from_string(point_string)
       Share.new(charset, point)
     end
 
-    # Parses the string representation of a share into charset, the x and the y
-    # coordinate out of a string representation of a share. Since the charset
+    # Parses the string representation of a share into charset and point
+    # coordinates out of a string representation of a share. Since the charset
     # part can have a "-" in it it must be parsed backwards and not just
     # splitted by "-".
     #
     # Example
     #
     #   SecretSharing::Share.parse '$$ASCII-1-2'
-    #   # => ['$$ASCII', '1', '2']
+    #   # => ['$$ASCII', '1-2']
     #
     # @param share_string [String] a string representation of a share
-    # @return an array in form of [charset_string, x_string, y_string]
+    # @return an array in form of [charset_string, point_string]
     #
     def self.parse(share_string)
-      charset_string, x_share, y_share = '', '', ''
+      charset_string, point_string = '', ''
       number_of_dashes = 0
       share_string.chars.reverse.each do |char|
-        y_share.prepend(char) if number_of_dashes == 0 && char != '-'
-        x_share.prepend(char) if number_of_dashes == 1 && char != '-'
         charset_string.prepend(char) if number_of_dashes >= 2
         number_of_dashes += 1 if char == '-'
+        point_string.prepend(char) if number_of_dashes <= 1
       end
-      [charset_string, x_share, y_share]
+      [charset_string, point_string]
     end
   end
 end
