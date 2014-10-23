@@ -19,7 +19,6 @@ module SecretSharing
     # @param string [String] The string to evaluate the charset for.
     # @return A charset that has at least the methods #s_to_i and #i_to_s.
     def by_string(string)
-      return HexCharset.new if HexCharset.new.subset?(string)
       return ASCIICharset.new if ASCIICharset.new.subset?(string)
       DynamicCharset.from_string string
     end
@@ -28,11 +27,8 @@ module SecretSharing
     #
     # Example
     #
-    #   SecretSharing::Charset.by_charset_string '$$ASCII'
+    #   SecretSharing::Charset.by_charset_string ''
     #   # => #<SecretSharing::ASCIICharset @charset=[...]>
-    #
-    #   SecretSharing::Charset.by_charset_string '$$HEX'
-    #   # => #<SecretSharing::HexCharset @charset=[...]>
     #
     # Or in case of a custom charset
     #
@@ -42,12 +38,10 @@ module SecretSharing
     # @param charset_string [String] The string to evaluate the charset for.
     # @return A charset that has at least the methods #s_to_i and #i_to_s.
     def by_charset_string(charset_string)
-      charsets = {
-        '$$HEX'   => HexCharset.new,
-        '$$ASCII' => ASCIICharset.new
-      }
-      result_charset = charsets[charset_string]
-      result_charset || DynamicCharset.new(charset_string.chars)
+      if charset_string.empty?
+        return ASCIICharset.new
+      end
+      DynamicCharset.new(charset_string.chars)
     end
 
     module_function :by_string,
@@ -172,15 +166,8 @@ module SecretSharing
         @charset.length
       end
 
-      # String representation of the charset
-      #
-      # Example
-      #
-      #   charset = SecretSharing::Charset.by_charset_string 'abc'
-      #   charset.to_s
-      #   # => "abc"
-      def to_s
-        @charset[1...length].join
+      def add_to_point(point_string)
+        "#{@charset[1...length].join}-#{point_string}"
       end
 
       # Check if the provided string can be represented by the charset.
@@ -203,24 +190,14 @@ module SecretSharing
     # Charset that can represent any string that only consists of ASCII
     # characters.
     class ASCIICharset < DynamicCharset
+      # An instance of an ASCIICharset is just a DynamicCharset with the ASCII
+      # characters.
       def initialize
         super((1..127).to_a.map(&:chr))
       end
 
-      def to_s
-        '$$ASCII'
-      end
-    end
-
-    # Charset that can represent any string that only consists of Hex
-    # characters.
-    class HexCharset < DynamicCharset
-      def initialize
-        super (0..15).to_a.map { |i| i.to_s(16) }
-      end
-
-      def to_s
-        '$$HEX'
+      def add_to_point(point_string)
+        point_string
       end
     end
   end

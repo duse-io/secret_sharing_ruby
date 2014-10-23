@@ -33,17 +33,17 @@ module SecretSharing
     #   charset = SecretSharing::ASCIICharset.new
     #   point = SecretSharing::Point.new 1, 2
     #   SecretSharing::Share.new(charset, point).to_s
-    #   # => "$$ASCII-1-2"
+    #   # => "1-2"
     #
     def to_s
-      charset.to_s + '-' + point.to_s
+      charset.add_to_point(point.to_s)
     end
 
     # Creates a share object from its string representation.
     #
     # Example
     #
-    #   SecretSharing::Share.from_string "$$ASCII-1-2"
+    #   SecretSharing::Share.from_string "1-2"
     #   # => #<SecretSharing::Share:0x0000000 @charset=..., @point=...>
     #
     def self.from_string(share_string)
@@ -60,8 +60,8 @@ module SecretSharing
     #
     # Example
     #
-    #   SecretSharing::Share.parse '$$ASCII-1-2'
-    #   # => ['$$ASCII', '1-2']
+    #   SecretSharing::Share.parse '1-2'
+    #   # => ['', '1-2']
     #
     # @param share_string [String] a string representation of a share
     # @return an array in form of [charset_string, point_string]

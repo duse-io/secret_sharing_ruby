@@ -28,23 +28,9 @@ describe SecretSharing::Charset do
       expect { encoder.i_to_s('error') }.to raise_error(ArgumentError)
     end
 
-    it 'should return the correct charset for "$$ASCII"' do
-      charset = SecretSharing::Charset.by_charset_string('$$ASCII')
+    it 'should return the correct charset for ""' do
+      charset = SecretSharing::Charset.by_charset_string('')
       expect(charset).to be_a SecretSharing::Charset::ASCIICharset
-    end
-  end
-end
-
-describe SecretSharing::Charset::HexCharset do
-  context 'encode and decode' do
-    it 'should be able to decode randomly generated encoded strings' do
-      50.times do
-        str = SecureRandom.hex(100)
-        str = SecureRandom.hex(100) while str[0] == '0'
-        encoded = SecretSharing::Charset::HexCharset.new.s_to_i(str)
-        decoded = SecretSharing::Charset::HexCharset.new.i_to_s(encoded)
-        expect(decoded).to eq(str)
-      end
     end
   end
 end
