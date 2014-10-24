@@ -38,9 +38,7 @@ module SecretSharing
     # @param charset_string [String] The string to evaluate the charset for.
     # @return A charset that has at least the methods #s_to_i and #i_to_s.
     def by_charset_string(charset_string)
-      if charset_string.empty?
-        return ASCIICharset.new
-      end
+      return ASCIICharset.new if charset_string.empty?
       DynamicCharset.new(charset_string.chars)
     end
 
@@ -166,6 +164,17 @@ module SecretSharing
         @charset.length
       end
 
+      # Adds a string representation of the charset to the string, which can
+      # later be used to recreate the charset.
+      #
+      #   Example
+      #
+      #     charset = SecretSharing::Charset.by_charset_string 'abc'
+      #     charset.add_to_point('1-2')
+      #     # => "abc-1-2"
+      #
+      # @param point_string [String] string to prepend to
+      # @return [String] string representation of charset-point_string
       def add_to_point(point_string)
         "#{@charset[1...length].join}-#{point_string}"
       end
@@ -196,6 +205,18 @@ module SecretSharing
         super((1..127).to_a.map(&:chr))
       end
 
+      # Adds a string representation of the charset to the string (empty string
+      # in case of ASCII, since it is the default charset), which can later be
+      # used to recreate the charset.
+      #
+      # Example
+      #
+      #   charset = SecretSharing::Charset.by_charset_string 'abc'
+      #   charset.add_to_point('1-2')
+      #   # => "abc-1-2"
+      #
+      # @param point_string [String] string to prepend to
+      # @return [String] string representation of charset-point_string
       def add_to_point(point_string)
         point_string
       end

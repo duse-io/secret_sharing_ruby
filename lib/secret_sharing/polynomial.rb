@@ -1,4 +1,6 @@
 module SecretSharing
+  # The polynomial is used to represent the required random polynomials used in
+  # Shamir's Secret Sharing algorithm.
   class Polynomial
     def initialize(coefficients)
       @coefficients = coefficients
