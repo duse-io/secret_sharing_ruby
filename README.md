@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/flower-pot/secret_sharing.svg)](https://travis-ci.org/flower-pot/secret_sharing)
-[![Coverage Status](https://img.shields.io/coveralls/flower-pot/secret_sharing.svg)](https://coveralls.io/r/flower-pot/secret_sharing)
-[![Code Climate](https://codeclimate.com/github/flower-pot/secret_sharing/badges/gpa.svg)](https://codeclimate.com/github/flower-pot/secret_sharing)
+[![Build Status](https://travis-ci.org/duse-io/secret_sharing_ruby.svg?branch=master)](https://travis-ci.org/duse-io/secret_sharing_ruby)
+[![Coverage Status](https://img.shields.io/coveralls/duse-io/secret_sharing_ruby.svg)](https://coveralls.io/r/duse-io/secret_sharing_ruby)
+[![Code Climate](https://codeclimate.com/github/duse-io/secret_sharing_ruby/badges/gpa.svg)](https://codeclimate.com/github/duse-io/secret_sharing_ruby)
 
 # SecretSharing
 
@@ -32,18 +32,23 @@ Or install it yourself as:
 
 This implementation can also handle non-ascii characters, however, the charset
 will be visible in the calculated shares. Thus splitting ascii only strings is
-"more" secure.
+"more" secure. (but always remember, shamir's secret sharing alone is not
+secure)
 
 ## Compatible libraries
 
 Since this implementation is special in some ways most [Shamir’s Secret
 Sharing](http://de.wikipedia.org/wiki/Shamir%E2%80%99s_Secret_Sharing)
 libraries are not compatible. The only library that is compatible as of now is
-[Adracus/secret-sharing-dart](https://github.com/Adracus/secret-sharing-dart).
+[duse-io/secret-sharing-dart](https://github.com/duse-io/secret-sharing-dart).
+
+We do have [integration
+tests](https://github.com/duse-io/lib-integration-tests) that make sure the
+libraries work with each other.
 
 ## Contributing
 
-1. Fork it ( https://github.com/flower-pot/secret_sharing/fork )
+1. Fork it ( https://github.com/duse-io/secret_sharing/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

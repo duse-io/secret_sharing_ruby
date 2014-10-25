@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['flower-pot']
   spec.email         = ['fbranczyk@gmail.com']
   spec.summary       = 'Ruby implementation of sharmir\'s secret sharing'
-  spec.description   = 'Securely share divide and reconstruct secrets.'
-  spec.homepage      = 'https://github.com/flower-pot/secret_sharing'
+  spec.description   = 'Divide, share and reconstruct secrets.'
+  spec.homepage      = 'https://github.com/duse-io/secret_sharing_ruby'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
