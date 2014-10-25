@@ -150,7 +150,8 @@ module SecretSharing
       def char_to_codepoint(c)
         codepoint = @charset.rindex c
         return codepoint unless codepoint.nil?
-        fail ArgumentError, "Character \"#{c}\" not part of the supported charset"
+        error_msg = "Character \"#{c}\" not part of the supported charset"
+        fail ArgumentError, error_msg
       end
 
       # Total length of the charset

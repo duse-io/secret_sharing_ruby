@@ -1,3 +1,6 @@
 Style/AsciiComments:
   Enabled: false # not to comment in another language than english but to be
                  # able to write tests for non ascii characters
+
+Documentation:
+  Enabled: false
