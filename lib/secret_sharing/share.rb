@@ -13,15 +13,9 @@ module SecretSharing
     #   SecretSharing::Share.new charset, point
     #   # => #<SecretSharing::Share:0x0000000 @charset=..., @point=...>
     #
+    # @param charset [SecretSharing::Charset::DynamicCharset]
+    # @param point [SecretSharing::Point]
     def initialize(charset, point)
-      unless charset.is_a?(SecretSharing::Charset::DynamicCharset)
-        error_msg = 'Charset must be a SecretSharing::Charset::DynamicCharset'
-        fail ArgumentError, error_msg
-      end
-      unless point.is_a?(SecretSharing::Point)
-        fail ArgumentError, 'Point must be SecretSharing::Point'
-      end
-
       @charset = charset
       @point = point
     end
