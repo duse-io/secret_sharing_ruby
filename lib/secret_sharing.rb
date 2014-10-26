@@ -44,9 +44,7 @@ module SecretSharing
   #
   # @return [String] Recovered secret in a string representation.
   def recover_secret(raw_shares)
-    shares = raw_shares.map do |raw_share|
-      Share.from_string raw_share
-    end
+    shares = raw_shares.map { |raw_share| Share.from_string raw_share }
     points = shares.map(&:point)
     secret_int = Polynomial.modular_lagrange_interpolation(points)
     shares.first.charset.i_to_s(secret_int)

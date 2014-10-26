@@ -13,10 +13,6 @@ module SecretSharing
     # @param x [Integer] The x value of the point
     # @param y [Integer] The y value of the point
     def initialize(x, y)
-      unless x.is_a?(Integer) && y.is_a?(Integer)
-        fail ArgumentError, 'Coordinates must be integers'
-      end
-
       @x = x
       @y = y
     end
