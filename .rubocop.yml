@@ -3,4 +3,6 @@ Style/AsciiComments:
                  # able to write tests for non ascii characters
 
 Documentation:
-  Enabled: false
+  Enabled: false # this is handled by yard and it is annoying since rubocop does
+                 # not notice if a top level class documentation has already
+                 # been created (https://github.com/bbatsov/rubocop/issues/691)
