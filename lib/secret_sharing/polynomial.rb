@@ -1,3 +1,5 @@
+require 'securerandom'
+
 module SecretSharing
   # The polynomial is used to represent the required random polynomials used in
   # Shamir's Secret Sharing algorithm.
@@ -53,7 +55,7 @@ module SecretSharing
       fail ArgumentError, 'Degree must be a non-negative number' if degree < 0
 
       coefficients = (0...degree).reduce([intercept]) do |accumulator, _i|
-        accumulator << Random.new.rand(0...upper_bound)
+        accumulator << SecureRandom.random_number(upper_bound)
       end
       Polynomial.new coefficients
     end
