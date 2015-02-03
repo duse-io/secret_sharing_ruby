@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in secret_sharing.gemspec
-gem 'bundler', '~> 1.6'
 gem 'rake',  group: [:development, :test]
 gem 'rspec', group: [:development, :test]
 gem 'yard',  group: :development
