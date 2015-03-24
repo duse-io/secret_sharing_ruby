@@ -14,7 +14,7 @@ module SecretSharing
   # Example
   #
   #   SecretSharing.split_secret('secret', 2, 3)
-  #   # => ["tcesr-1-4e16", "tcesr-2-1105", "tcesr-3-1d3f3"]
+  #   # => ["1-1e489c32507823aa", "2-1c9134c644739461", "3-1ad9cd5a386f0518"]
   #
   # @param secret_string [String] Secret to split.
   # @param share_threshold [Integer] Number of shares to recover the secret.
@@ -22,13 +22,13 @@ module SecretSharing
   #
   # @return [Array] Array of shares that can be used to recover the secret.
   def split_secret(secret_string, share_threshold, num_shares)
-    charset = Charset.by_string secret_string
-    secret_int = charset.s_to_i(secret_string)
+    secret_int = Charset::ASCIICharset.new.s_to_i(secret_string)
     points = Polynomial.points_from_secret(secret_int,
                                            share_threshold,
                                            num_shares)
+
     points.map do |point|
-      Share.new(charset, point).to_s
+      Share.new(point).to_s
     end
   end
 
@@ -37,7 +37,7 @@ module SecretSharing
   #
   # Example
   #
-  #   SecretSharing.recover_secret(["tcesr-1-4e16", "tcesr-2-1105"])
+  #   SecretSharing.recover_secret ["1-1e489c32507823aa", "2-1c9134c644739461"]
   #   # => "secret"
   #
   # @param raw_shares [Array] Shares (array of strings) to recover the secret
@@ -47,7 +47,7 @@ module SecretSharing
     shares = raw_shares.map { |raw_share| Share.from_string raw_share }
     points = shares.map(&:point)
     secret_int = Polynomial.modular_lagrange_interpolation(points)
-    shares.first.charset.i_to_s(secret_int)
+    Charset::ASCIICharset.new.i_to_s(secret_int)
   end
 
   module_function :split_secret,

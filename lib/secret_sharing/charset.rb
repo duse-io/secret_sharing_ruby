@@ -1,51 +1,6 @@
 require 'set'
 
 module SecretSharing
-  # This module is used to create or retrieve a charset to use.
-  module Charset
-    # Decides which charset fits the provided string best and creates a custom
-    # charset if no predefined charset fits the usecase.
-    #
-    # Example
-    #
-    #   SecretSharing::Charset.by_string 'test'
-    #   # => #<SecretSharing::ASCIICharset @charset=[...]>
-    #
-    # Or with a custom charset
-    #
-    #   SecretSharing::Charset.by_string 'testä'
-    #   # => #<SecretSharing::DynamicCharset @charset=["s", "e", "ä", "t"]>
-    #
-    # @param string [String] The string to evaluate the charset for.
-    # @return A charset that has at least the methods #s_to_i and #i_to_s.
-    def by_string(string)
-      return ASCIICharset.new if ASCIICharset.new.subset?(string)
-      DynamicCharset.from_string string
-    end
-
-    # Retrieves a charset based on its string representation.
-    #
-    # Example
-    #
-    #   SecretSharing::Charset.by_charset_string ''
-    #   # => #<SecretSharing::ASCIICharset @charset=[...]>
-    #
-    # Or in case of a custom charset
-    #
-    #   SecretSharing::Charset.by_charset_string 'tesä'
-    #   # => #<SecretSharing::DynamicCharset @charset=["t", "e", "s", "ä"]>
-    #
-    # @param charset_string [String] The string to evaluate the charset for.
-    # @return A charset that has at least the methods #s_to_i and #i_to_s.
-    def by_charset_string(charset_string)
-      return ASCIICharset.new if charset_string.empty?
-      DynamicCharset.new(charset_string.chars)
-    end
-
-    module_function :by_string,
-                    :by_charset_string
-  end
-
   module Charset
     # This objects of this class can represent a custom charset whenever the
     # predefined charsets do not fit a situation.
@@ -65,19 +20,6 @@ module SecretSharing
       # @param charset [Array] array of characters to use for the charset.
       def initialize(charset)
         @charset = charset.unshift("\u0000")
-      end
-
-      # Create a charset based on a string to encode.
-      #
-      # Example
-      #
-      #   SecretSharing::Charset::DynamicCharset.from_string 'test'
-      #   # => #<SecretSharing::Charset::DynamicCharset @charset=['e','t','s']>
-      #
-      # @param string [String] a string to encode with the charset to generate
-      # @return [DynamicCharset] shuffled charset to encode strings to ints
-      def self.from_string(string)
-        DynamicCharset.new string.chars.shuffle.uniq
       end
 
       # Calculate a string from an integer.
@@ -165,21 +107,6 @@ module SecretSharing
         @charset.length
       end
 
-      # Adds a string representation of the charset to the string, which can
-      # later be used to recreate the charset.
-      #
-      #   Example
-      #
-      #     charset = SecretSharing::Charset.by_charset_string 'abc'
-      #     charset.add_to_point('1-2')
-      #     # => "abc-1-2"
-      #
-      # @param point_string [String] string to prepend to
-      # @return [String] string representation of charset-point_string
-      def add_to_point(point_string)
-        "#{@charset[1...length].join}-#{point_string}"
-      end
-
       # Check if the provided string can be represented by the charset.
       #
       # Example
@@ -205,22 +132,7 @@ module SecretSharing
       def initialize
         super((1..127).to_a.map(&:chr))
       end
-
-      # Adds a string representation of the charset to the string (empty string
-      # in case of ASCII, since it is the default charset), which can later be
-      # used to recreate the charset.
-      #
-      # Example
-      #
-      #   charset = SecretSharing::Charset.by_charset_string 'abc'
-      #   charset.add_to_point('1-2')
-      #   # => "abc-1-2"
-      #
-      # @param point_string [String] string to prepend to
-      # @return [String] string representation of charset-point_string
-      def add_to_point(point_string)
-        point_string
-      end
     end
   end
 end
+

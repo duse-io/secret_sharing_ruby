@@ -2,21 +2,18 @@ module SecretSharing
   # A share is an object that encapsulates the properties of a share created by
   # Shamir's Secret Sharing algorithm.
   class Share
-    attr_reader :charset, :point
+    attr_reader :point
 
     # Create a share object
     #
     # Example
     #
-    #   charset = SecretSharing::ASCIICharset.new
     #   point = SecretSharing::Point.new 1, 2
-    #   SecretSharing::Share.new charset, point
-    #   # => #<SecretSharing::Share:0x0000000 @charset=..., @point=...>
+    #   SecretSharing::Share.new point
+    #   # => #<SecretSharing::Share:0x0000000 @point=...>
     #
-    # @param charset [SecretSharing::Charset::DynamicCharset]
     # @param point [SecretSharing::Point]
-    def initialize(charset, point)
-      @charset = charset
+    def initialize(point)
       @point = point
     end
 
@@ -24,13 +21,12 @@ module SecretSharing
     #
     # Example
     #
-    #   charset = SecretSharing::ASCIICharset.new
     #   point = SecretSharing::Point.new 1, 2
-    #   SecretSharing::Share.new(charset, point).to_s
+    #   SecretSharing::Share.new(point).to_s
     #   # => "1-2"
     #
     def to_s
-      charset.add_to_point(point.to_s)
+      "#{point.x}-#{point.y.to_s(16)}"
     end
 
     # Creates a share object from its string representation.
@@ -38,37 +34,12 @@ module SecretSharing
     # Example
     #
     #   SecretSharing::Share.from_string "1-2"
-    #   # => #<SecretSharing::Share:0x0000000 @charset=..., @point=...>
+    #   # => #<SecretSharing::Share:0x0000000 @point=...>
     #
     def self.from_string(share_string)
-      charset_string, point_string = parse share_string
-      charset = Charset.by_charset_string charset_string
-      point = Point.from_string(point_string)
-      Share.new(charset, point)
-    end
-
-    # Parses the string representation of a share into charset and point
-    # coordinates out of a string representation of a share. Since the charset
-    # part can have a "-" in it it must be parsed backwards and not just
-    # splitted by "-".
-    #
-    # Example
-    #
-    #   SecretSharing::Share.parse '1-2'
-    #   # => ['', '1-2']
-    #
-    # @param share_string [String] a string representation of a share
-    # @return an array in form of [charset_string, point_string]
-    #
-    def self.parse(share_string)
-      charset_string, point_string = '', ''
-      number_of_dashes = 0
-      share_string.chars.reverse.each do |char|
-        charset_string.prepend(char) if number_of_dashes >= 2
-        number_of_dashes += 1 if char == '-'
-        point_string.prepend(char) if number_of_dashes <= 1
-      end
-      [charset_string, point_string]
+      x_string, y_string = share_string.split '-'
+      point = Point.new x_string.to_i, y_string.to_i(16)
+      Share.new(point)
     end
   end
 end
