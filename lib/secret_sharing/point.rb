@@ -1,7 +1,7 @@
 module SecretSharing
   # This class is used to store a two dimensional point consisting of integers.
   class Point
-    attr_accessor :x, :y
+    attr_reader :x, :y
 
     # Create a Point object.
     #
