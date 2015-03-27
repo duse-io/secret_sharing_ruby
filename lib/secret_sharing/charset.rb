@@ -119,4 +119,3 @@ module SecretSharing
     ASCIICharset = new((1..127).to_a.map(&:chr))
   end
 end
-

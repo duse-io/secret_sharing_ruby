@@ -1,7 +1,7 @@
 require 'securerandom'
 
 describe SecretSharing::Charset do
-  subject(:charset) { SecretSharing::Charset.new ['a', 'b', 'c'] }
+  subject(:charset) { SecretSharing::Charset.new %w(a b c) }
 
   describe '#initialize' do
     it 'adds a non printable character in front of the charset' do
@@ -59,7 +59,7 @@ describe SecretSharing::Charset do
     it 'throws an error on an integer outside of the charset' do
       expect { charset.codepoint_to_char(4) }.to raise_error(
         ArgumentError,
-        "Codepoint 4 does not exist in charset"
+        'Codepoint 4 does not exist in charset'
       )
     end
   end
@@ -104,9 +104,10 @@ describe SecretSharing::Charset::ASCIICharset do
   end
 
   it 'supports all printable characters in ASCII' do
-    all_chars = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~\n"
+    all_chars = " !\"#$%&'()*+,-./0123456789:;<=>?@" \
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`" \
+                "abcdefghijklmnopqrstuvwxyz{|}~\n"
     int = SecretSharing::Charset::ASCIICharset.s_to_i all_chars
     expect(SecretSharing::Charset::ASCIICharset.i_to_s(int)).to eq all_chars
   end
 end
-
