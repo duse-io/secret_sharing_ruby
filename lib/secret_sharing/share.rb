@@ -42,7 +42,7 @@ module SecretSharing
     def self.from_string(share_string)
       x_string, y_string = share_string.split '-'
       point = Point.new x_string.to_i, y_string.to_i(16)
-      Share.new(point)
+      new(point)
     end
   end
 end

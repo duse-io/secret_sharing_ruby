@@ -20,18 +20,6 @@ module SecretSharing
       @y = y
     end
 
-    # A nicer inspection of a point object than by default.
-    #
-    # @return [String] String representation of a Point
-    #
-    # Examples
-    #
-    #   SecretSharing::Point.new(1, 2).inspect
-    #   # => "#<Point: @x=1 @y=2>"
-    def inspect
-      "#<Point: @x=#{x} @y=#{y}>"
-    end
-
     # An implementation similar to Array#transpose for Arrays of Points
     #
     # @return [Array] Two Arrays in an Array
