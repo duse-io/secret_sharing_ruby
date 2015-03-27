@@ -2,8 +2,7 @@ module SecretSharing
   # A share is an object that encapsulates the properties of a share created by
   # Shamir's Secret Sharing algorithm.
   class Share
-    # @!attribute point
-    #   @return [SecretSharing::Point] Point the share was instantiated with
+    # @return [SecretSharing::Point] Point the share was instantiated with
     attr_reader :point
 
     # Create a share object

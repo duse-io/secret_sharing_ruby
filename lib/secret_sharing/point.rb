@@ -1,11 +1,10 @@
 module SecretSharing
   # This class is used to store a two dimensional point consisting of integers.
   class Point
-    # @!attribute x
-    #   @return [Integer] x value the point was instantiated with
-    # @!attribute y
-    #   @return [Integer] y value the point was instantiated with
-    attr_reader :x, :y
+    # @return [Integer] x value the point was instantiated with
+    attr_reader :x
+    # @return [Integer] y value the point was instantiated with
+    attr_reader :y
 
     # Create a Point object.
     #
