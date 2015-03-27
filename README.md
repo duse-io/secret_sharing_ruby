@@ -1,3 +1,4 @@
+[![Gem Version](https://badge.fury.io/rb/secret_sharing.svg)](http://badge.fury.io/rb/secret_sharing)
 [![Build Status](https://travis-ci.org/duse-io/secret_sharing_ruby.svg?branch=master)](https://travis-ci.org/duse-io/secret_sharing_ruby)
 [![Coverage Status](https://coveralls.io/repos/duse-io/secret_sharing_ruby/badge.svg?branch=master)](https://coveralls.io/r/duse-io/secret_sharing_ruby?branch=master)
 [![Code Climate](https://codeclimate.com/github/duse-io/secret_sharing_ruby/badges/gpa.svg)](https://codeclimate.com/github/duse-io/secret_sharing_ruby)
