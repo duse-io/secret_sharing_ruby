@@ -5,6 +5,9 @@ module SecretSharing
     # This objects of this class can represent a custom charset whenever the
     # predefined charsets do not fit a situation.
     class DynamicCharset
+      # @return [Array] internal representation of the charset
+      attr_reader :charset
+
       # A new instance of DynamicCharset. The constructor should only be used
       # when you know what you are doing. Usually you only want to use this
       # constructor when you recreate a charset and the order of the charset is
@@ -19,7 +22,8 @@ module SecretSharing
       #
       # @param charset [Array] array of characters to use for the charset.
       def initialize(charset)
-        @charset = charset.unshift("\u0000")
+        @charset = ["\u0000"] + charset
+        @charset.freeze
       end
 
       # Calculate a string from an integer.
@@ -33,13 +37,13 @@ module SecretSharing
       # @param x [Integer] integer to convert to string
       # @return [String] converted string
       def i_to_s(x)
-        unless x.is_a?(Integer) && x >= 0
+        if !x.is_a?(Integer) || x < 0
           fail ArgumentError, 'x must be a non-negative integer'
         end
 
         output = ''
         while x > 0
-          x, codepoint = x.divmod(length)
+          x, codepoint = x.divmod(charset.length)
           output.prepend(codepoint_to_char(codepoint))
         end
         output
@@ -57,7 +61,7 @@ module SecretSharing
       # @return [String] converted string
       def s_to_i(string)
         string.chars.reduce(0) do |output, char|
-          output * length + char_to_codepoint(char)
+          output * charset.length + char_to_codepoint(char)
         end
       end
 
@@ -73,9 +77,10 @@ module SecretSharing
       # @param codepoint [Integer] Codepoint to retrieve the character for
       # @return [String] Retrieved character
       def codepoint_to_char(codepoint)
-        char = @charset[codepoint]
-        return char unless char.nil?
-        fail ArgumentError, "Codepoint #{codepoint} does not exist in charset"
+        if charset.at(codepoint).nil?
+          fail ArgumentError, "Codepoint #{codepoint} does not exist in charset"
+        end
+        charset.at(codepoint)
       end
 
       # Convert a single character into its integer representation according to
@@ -90,21 +95,12 @@ module SecretSharing
       # @param c [String] Character to retrieve its codepoint in the charset
       # @return [Integer] Codepoint within the charset
       def char_to_codepoint(c)
-        codepoint = @charset.rindex c
-        return codepoint unless codepoint.nil?
-        error_msg = "Character \"#{c}\" not part of the supported charset"
-        fail ArgumentError, error_msg
-      end
-
-      # Total length of the charset
-      #
-      # Example
-      #
-      #   charset = SecretSharing::Charset.by_charset_string 'abc'
-      #   charset.length
-      #   # => 4
-      def length
-        @charset.length
+        codepoint = charset.index c
+        if codepoint.nil?
+          error_msg = "Character \"#{c}\" not part of the supported charset"
+          fail ArgumentError, error_msg
+        end
+        codepoint
       end
 
       # Check if the provided string can be represented by the charset.
@@ -120,7 +116,7 @@ module SecretSharing
       # @param string [String] Character to retrieve the for codepoint
       # @return [TrueClass|FalseClass]
       def subset?(string)
-        (Set.new(string.chars.uniq) - Set.new(@charset)).empty?
+        (string.chars - charset).empty?
       end
     end
 
