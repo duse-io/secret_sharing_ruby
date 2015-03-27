@@ -22,7 +22,7 @@ module SecretSharing
   #
   # @return [Array] Array of shares that can be used to recover the secret.
   def split_secret(secret_string, share_threshold, num_shares)
-    secret_int = Charset::ASCIICharset.new.s_to_i(secret_string)
+    secret_int = Charset::ASCIICharset.s_to_i(secret_string)
     points = Polynomial.points_from_secret(secret_int,
                                            share_threshold,
                                            num_shares)
@@ -47,7 +47,7 @@ module SecretSharing
     shares = raw_shares.map { |raw_share| Share.from_string raw_share }
     points = shares.map(&:point)
     secret_int = Polynomial.modular_lagrange_interpolation(points)
-    Charset::ASCIICharset.new.i_to_s(secret_int)
+    Charset::ASCIICharset.i_to_s(secret_int)
   end
 
   module_function :split_secret,

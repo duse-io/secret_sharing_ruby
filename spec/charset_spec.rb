@@ -1,7 +1,7 @@
 require 'securerandom'
 
-describe SecretSharing::Charset::DynamicCharset do
-  subject(:charset) { SecretSharing::Charset::DynamicCharset.new ['a', 'b', 'c'] }
+describe SecretSharing::Charset do
+  subject(:charset) { SecretSharing::Charset.new ['a', 'b', 'c'] }
 
   describe '#initialize' do
     it 'adds a non printable character in front of the charset' do
@@ -98,9 +98,15 @@ describe SecretSharing::Charset::DynamicCharset do
   end
 end
 
-#describe SecretSharing::Charset::ASCIICharset do
-#  it 'supports all printable characters in ASCII' do
-#    all_chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-#  end
-#end
+describe SecretSharing::Charset::ASCIICharset do
+  it 'is a 128 character long charset' do
+    expect(SecretSharing::Charset::ASCIICharset.charset.length).to eq 128
+  end
+
+  it 'supports all printable characters in ASCII' do
+    all_chars = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~\n"
+    int = SecretSharing::Charset::ASCIICharset.s_to_i all_chars
+    expect(SecretSharing::Charset::ASCIICharset.i_to_s(int)).to eq all_chars
+  end
+end
 
