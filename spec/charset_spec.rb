@@ -98,7 +98,7 @@ describe SecretSharing::Charset do
   end
 end
 
-describe SecretSharing::Charset::ASCIICharset do
+describe 'SecretSharing::Charset::ASCIICharset' do
   it 'is a 128 character long charset' do
     expect(SecretSharing::Charset::ASCIICharset.charset.length).to eq 128
   end

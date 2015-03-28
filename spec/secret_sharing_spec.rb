@@ -1,6 +1,6 @@
 require 'securerandom'
 
-describe SecretSharing do
+RSpec.describe SecretSharing do
   it 'should encrypt and decrypt correctly' do
     50.times do
       secret = SecureRandom.base64(130)

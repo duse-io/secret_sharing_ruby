@@ -1,4 +1,4 @@
-describe SecretSharing::Share do
+RSpec.describe SecretSharing::Share do
   describe '.from_string' do
     it 'creates an instance from a string' do
       share = SecretSharing::Share.from_string('1-2')
