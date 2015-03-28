@@ -3,6 +3,9 @@ require 'set'
 module SecretSharing
   # Charset can represent any charset which does not have the null byte
   class Charset
+    class NotInCharset < ArgumentError; end
+    class NotPositiveInteger < ArgumentError; end
+
     # @return [Array] internal representation of the charset
     attr_reader :charset
 
@@ -29,16 +32,16 @@ module SecretSharing
     #   charset.i_to_s 6
     #   # => "ab"
     #
-    # @param x [Integer] integer to convert to string
+    # @param input [Integer] integer to convert to string
     # @return [String] converted string
-    def i_to_s(x)
-      if !x.is_a?(Integer) || x < 0
-        fail ArgumentError, 'x must be a non-negative integer'
+    def i_to_s(input)
+      if !input.is_a?(Integer) || input < 0
+        fail NotPositiveInteger, 'input must be a non-negative integer'
       end
 
       output = ''
-      while x > 0
-        x, codepoint = x.divmod(charset.length)
+      while input > 0
+        input, codepoint = input.divmod(charset.length)
         output.prepend(codepoint_to_char(codepoint))
       end
       output
@@ -73,7 +76,7 @@ module SecretSharing
     # @return [String] Retrieved character
     def codepoint_to_char(codepoint)
       if charset.at(codepoint).nil?
-        fail ArgumentError, "Codepoint #{codepoint} does not exist in charset"
+        fail NotInCharset, "Codepoint #{codepoint} does not exist in charset"
       end
       charset.at(codepoint)
     end
@@ -92,8 +95,7 @@ module SecretSharing
     def char_to_codepoint(c)
       codepoint = charset.index c
       if codepoint.nil?
-        error_msg = "Character \"#{c}\" not part of the supported charset"
-        fail ArgumentError, error_msg
+        fail NotInCharset, "Char \"#{c}\" not part of the supported charset"
       end
       codepoint
     end

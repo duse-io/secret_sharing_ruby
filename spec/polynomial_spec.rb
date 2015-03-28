@@ -1,4 +1,4 @@
-describe SecretSharing::Charset do
+describe SecretSharing::Polynomial do
   it 'should error when trying to generate a polynomial with negative degree' do
     random_generator = -> { SecretSharing::Polynomial.random(-1, 1, 12) }
     expect(&random_generator).to raise_error(ArgumentError)

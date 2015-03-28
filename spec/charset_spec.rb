@@ -28,15 +28,15 @@ describe SecretSharing::Charset do
 
     it 'throws an error when trying to convert negative numbers' do
       expect { charset.i_to_s(-1) }.to raise_error(
-        ArgumentError,
-        'x must be a non-negative integer'
+        SecretSharing::Charset::NotPositiveInteger,
+        'input must be a non-negative integer'
       )
     end
 
     it 'throws an error when trying to convert something non-integer' do
       expect { charset.i_to_s('error') }.to raise_error(
-        ArgumentError,
-        'x must be a non-negative integer'
+        SecretSharing::Charset::NotPositiveInteger,
+        'input must be a non-negative integer'
       )
     end
   end
@@ -58,7 +58,7 @@ describe SecretSharing::Charset do
 
     it 'throws an error on an integer outside of the charset' do
       expect { charset.codepoint_to_char(4) }.to raise_error(
-        ArgumentError,
+        SecretSharing::Charset::NotInCharset,
         'Codepoint 4 does not exist in charset'
       )
     end
@@ -71,8 +71,8 @@ describe SecretSharing::Charset do
 
     it 'throws an error on a character that is not in the charset' do
       expect { charset.char_to_codepoint('d') }.to raise_error(
-        ArgumentError,
-        "Character \"d\" not part of the supported charset"
+        SecretSharing::Charset::NotInCharset,
+        "Char \"d\" not part of the supported charset"
       )
     end
   end
