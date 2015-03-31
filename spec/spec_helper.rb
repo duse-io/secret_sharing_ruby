@@ -27,6 +27,8 @@ if ENV['CI']
   Coveralls.wear!
 end
 
+require 'timeout'
+
 require 'secret_sharing'
 
 RSpec.configure do |config|

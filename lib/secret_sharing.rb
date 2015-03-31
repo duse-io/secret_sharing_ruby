@@ -9,6 +9,8 @@ require 'secret_sharing/share'
 # connection to be consumed by a user. Do not use any other class/module of
 # this library unless you really know what you are doing.
 module SecretSharing
+  extend self
+
   # Split a secret using Shamir's Secret Sharing algorithm.
   #
   # Example
@@ -49,7 +51,4 @@ module SecretSharing
     secret_int = Polynomial.modular_lagrange_interpolation(points)
     Charset::ASCIICharset.i_to_s(secret_int)
   end
-
-  module_function :split_secret,
-                  :recover_secret
 end

@@ -9,4 +9,32 @@ RSpec.describe SecretSharing do
       expect(SecretSharing.recover_secret(shares[0..1])).to eq(secret)
     end
   end
+
+  context 'threshold 2 out of 4 shares' do
+    subject(:shares) { SecretSharing.split_secret('secret', 2, 4) }
+
+    it 'generates 4 shares' do
+      expect(shares.length). to eq 4
+    end
+
+    it 'cannot reconstruct with only one share' do
+      expect(SecretSharing.recover_secret(shares[0, 1])).not_to eq 'secret'
+    end
+
+    it 'can reconstruct the secret with any combination of 2 shares' do
+      shares.permutation(2).each do |share_combination|
+        expect(SecretSharing.recover_secret(share_combination)).to eq 'secret'
+      end
+    end
+
+    it 'can reconstruct the secret with any combination of 3 shares' do
+      shares.permutation(3).each do |share_combination|
+        expect(SecretSharing.recover_secret(share_combination)).to eq 'secret'
+      end
+    end
+
+    it 'can reconstruct the secret with all shares' do
+      expect(SecretSharing.recover_secret(shares)).to eq 'secret'
+    end
+  end
 end
