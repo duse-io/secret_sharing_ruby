@@ -4,17 +4,27 @@ module SecretSharing
   # The polynomial is used to represent the required random polynomials used in
   # Shamir's Secret Sharing algorithm.
   class Polynomial
+    attr_reader :coefficients
+
     # Create a new instance of a Polynomial with n coefficients, when having
     # the polynomial in standard polynomial form.
     #
     # Example
+    #
+    #   For the polynomial f(x) = a0 + a1 * x + a2 * x^2 + ... + an * x^n the
+    #   coefficients are [a0, a1, a2, ..., an]
     #
     #   Polynomial.new [1, 2, 3]
     #   # => #<SecretSharing::Polynomial:0x0000000 @coefficients=[1, 2, 3]>
     #
     # @param coefficients [Array] an array of integers as the coefficients
     def initialize(coefficients)
+      coefficients.each do |c|
+        not_an_int = 'One or more coefficents are not integers'
+        fail ArgumentError, not_an_int unless c.is_a?(Integer)
+      end
       @coefficients = coefficients
+      @coefficients.freeze
     end
 
     # Generate points on the polynomial, that can be used to reconstruct the
@@ -29,8 +39,9 @@ module SecretSharing
     # @param prime [Integer] prime for calculation in finite field
     # @return [Array] array of calculated points
     def points(num_points, prime)
+      intercept = @coefficients[0] # the first coefficient is the intercept
       (1..num_points).map do |x|
-        y = @coefficients[0]
+        y = intercept
         (1...@coefficients.length).each do |i|
           exponentiation = x**i % prime
           term = (@coefficients[i] * exponentiation) % prime
@@ -54,10 +65,10 @@ module SecretSharing
     def self.random(degree, intercept, upper_bound)
       fail ArgumentError, 'Degree must be a non-negative number' if degree < 0
 
-      coefficients = (0...degree).reduce([intercept]) do |accumulator, _i|
+      coefficients = (0...degree).reduce([intercept]) do |accumulator|
         accumulator << SecureRandom.random_number(upper_bound)
       end
-      Polynomial.new coefficients
+      new coefficients
     end
 
     # Generate points from a secret integer.
