@@ -30,7 +30,7 @@ module SecretSharing
                                            num_shares)
 
     points.map do |point|
-      Share.new(point).to_s
+      Share.new(point).to_s(Math.log10(points.length).floor + 1)
     end
   end
 

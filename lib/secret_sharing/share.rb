@@ -26,8 +26,8 @@ module SecretSharing
     #   SecretSharing::Share.new(point).to_s
     #   # => "1-2"
     #
-    def to_s
-      "#{point.x}-#{point.y.to_s(16)}"
+    def to_s(x_length)
+      "#{point.x.to_s.rjust(x_length, '0')}-#{point.y.to_s(16)}"
     end
 
     # Creates a share object from its string representation.
