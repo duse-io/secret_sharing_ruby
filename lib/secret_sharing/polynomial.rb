@@ -43,9 +43,7 @@ module SecretSharing
       (1..num_points).map do |x|
         y = intercept
         (1...@coefficients.length).each do |i|
-          exponentiation = x**i % prime
-          term = (@coefficients[i] * exponentiation) % prime
-          y = (y + term) % prime
+          y = (y + @coefficients[i] * x ** i) % prime
         end
         Point.new(x, y)
       end
