@@ -59,7 +59,13 @@ RSpec.describe SecretSharing::Polynomial do
     it 'randomly generates coefficients' do
       allow(SecureRandom).to receive(:random_number).and_return(3, 5, 2)
       polynomial = SecretSharing::Polynomial.random(3, 5, 10)
-      expect(polynomial.coefficients).to eq [5, 3, 5 ,2]
+      expect(polynomial.coefficients).to eq [5, 4, 6 ,3]
+    end
+
+    it 'ensures, that a coefficient is >= 1' do
+      allow(SecureRandom).to receive(:random_number).and_return(0, 0, 0)
+      polynomial = SecretSharing::Polynomial.random(3, 5, 10)
+      expect(polynomial.coefficients).to eq [5, 1, 1 ,1]
     end
 
     it 'uses the intercept as the first coefficient' do

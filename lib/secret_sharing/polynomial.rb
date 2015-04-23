@@ -64,7 +64,7 @@ module SecretSharing
       fail ArgumentError, 'Degree must be a non-negative number' if degree < 0
 
       coefficients = (0...degree).reduce([intercept]) do |accumulator|
-        accumulator << SecureRandom.random_number(upper_bound)
+        accumulator << SecureRandom.random_number(upper_bound - 1) + 1
       end
       new coefficients
     end
