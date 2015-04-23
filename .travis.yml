@@ -1,6 +1,14 @@
 language: ruby
 rvm:
-  - 2.2.2
-bundler_args: --without development
+- 2.2.2
+bundler_args: "--without development"
 cache: bundler
 sudo: false
+deploy:
+  provider: rubygems
+  api_key:
+    secure: aNkBOgCW7ZCsDHp/tSv1C2yxu1FVh9XoClyGNc6IXrvdJ/OouvuLucNXxazD53YnbaRqM5QxyJbl2wMNHrlp7aakjSmmPcHcYGWpZU0AzCaIvzCdoLPxL5GMR0K1CIdyL7KDTDv5ntmEA4iINACYcm20v0EBhY02Tbt1DI/nc9c=
+  gem: secret_sharing
+  on:
+    tags: true
+    repo: duse-io/secret_sharing_ruby
