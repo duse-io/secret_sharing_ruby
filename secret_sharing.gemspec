@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['flower-pot']
   spec.email         = ['fbranczyk@gmail.com']
   spec.summary       = 'Ruby implementation of sharmir\'s secret sharing'
-  spec.description   = 'Divide, share and reconstruct secrets.'
+  spec.description   = 'Split and reconstruct secrets using the shamir\'s secret sharing algorithm'
   spec.homepage      = 'https://github.com/duse-io/secret_sharing_ruby'
   spec.license       = 'MIT'
 
