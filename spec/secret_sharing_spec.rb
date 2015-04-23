@@ -37,4 +37,14 @@ RSpec.describe SecretSharing do
       expect(SecretSharing.recover_secret(shares)).to eq 'secret'
     end
   end
+
+  context 'threshold 2 out of 11 shares' do
+    subject(:shares) { SecretSharing.split_secret('secret', 2, 11) }
+
+    it 'adds zero padding for shares 1 to 9' do
+      shares[0, 9].each_with_index do |share, index|
+        expect(share).to start_with "0#{index+1}"
+      end
+    end
+  end
 end
