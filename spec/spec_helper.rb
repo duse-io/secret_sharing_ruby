@@ -58,4 +58,7 @@ RSpec.configure do |config|
   config.around :each do |block|
     Timeout.timeout(1, &block)
   end
+
+  config.order = :random
+  Kernel.srand config.seed
 end
