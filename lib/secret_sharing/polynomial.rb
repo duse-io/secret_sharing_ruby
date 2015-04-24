@@ -50,7 +50,8 @@ module SecretSharing
     end
 
     # Generate a random polynomial with a specific degree, defined x=0 value
-    # and an upper limit for the coefficients of the polynomial.
+    # and an upper limit for the coefficients of the polynomial. All
+    # coefficients generated are >= 1.
     #
     # Example
     #
@@ -81,13 +82,11 @@ module SecretSharing
     # @param num_points [Integer] number of points to generate
     # @return [Polynomial] the generated polynomial
     def self.points_from_secret(secret_int, point_threshold, num_points)
-      prime = SecretSharing::Prime.large_enough_prime([secret_int, num_points].max)
+      prime = Prime.large_enough_prime(secret_int)
       fail ArgumentError, 'Threshold must be at least 2' if point_threshold < 2
       fail ArgumentError, 'Threshold must be less than the total number of points' if point_threshold > num_points
 
-      polynomial = SecretSharing::Polynomial.random(point_threshold - 1,
-                                                    secret_int,
-                                                    prime)
+      polynomial = random(point_threshold - 1, secret_int, prime)
       polynomial.points(num_points, prime)
     rescue Prime::CannotFindLargeEnoughPrime
       raise ArgumentError, 'Secret is too long'
@@ -95,8 +94,8 @@ module SecretSharing
 
     # Modular lagrange interpolation
     def self.modular_lagrange_interpolation(points)
-      y_values = Point.transpose(points)[1]
-      prime = SecretSharing::Prime.large_enough_prime(y_values.max)
+      _, y_values = Point.transpose(points)
+      prime = Prime.large_enough_prime(y_values.max)
       points.reduce(0) do |f_x, point|
         numerator, denominator = lagrange_fraction(points, point, prime)
         lagrange_polynomial = numerator * mod_inverse(denominator, prime)
