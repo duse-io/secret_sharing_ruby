@@ -1,8 +1,13 @@
 source 'https://rubygems.org'
+gemspec
 
-gem 'rake',  group: [:development, :test]
-gem 'rspec', group: [:development, :test]
-gem 'yard',  group: :development
-gem 'rubocop',   require: false, group: :development
-gem 'simplecov', require: false, group: [:development, :test]
-gem 'coveralls', require: false, group: [:development, :test]
+group :development, :test do
+  gem 'rake'
+  gem 'rspec'
+  gem 'mutant'
+  gem 'mutant-rspec'
+  gem 'yard'
+  gem 'rubocop',   require: false
+  gem 'simplecov', require: false
+  gem 'coveralls', require: false
+end
