@@ -44,6 +44,14 @@ single digit shares have a prepending zero.
 * ...
 * `10-651e7e4b`
 
+Also, when generating a random polynomial, we make sure the coefficients are
+random, but never zero. If we would allow the coefficients to be zero, it could
+result in a lower threshold than intended. For example, if the threshold is
+three, then the degree of the polynomial would be two so in the form of
+`f(x)=a0 + a1*x + a2*x^2`. If `a2` would be zero than the polynomial would be
+of dergree one, which would result in a real threshold of two rather than
+three.
+
 ## Usage
 
 	require 'secret_sharing'
