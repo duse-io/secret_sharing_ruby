@@ -85,11 +85,36 @@ RSpec.describe SecretSharing::Polynomial do
       expect(points.length).to eq 4
     end
 
-    it 'requires threshold points to reconstruct' do
-      points = SecretSharing::Polynomial.points_from_secret(234234, 2, 3)
-      points = points[0, 2]
-      secret = SecretSharing::Polynomial.modular_lagrange_interpolation(points)
+    it 'generates points according to the threshold parameter' do
+      points = SecretSharing::Polynomial.points_from_secret(10, 2, 4)
+      required_points = points[0, 2]
+      result = SecretSharing::Polynomial.modular_lagrange_interpolation(required_points)
+      expect(result).to eq 10
+    end
+
+    it 'allows threshold and total number of points to be equal' do
+      points = SecretSharing::Polynomial.points_from_secret(10, 2, 2)
+      result = SecretSharing::Polynomial.modular_lagrange_interpolation(points)
+      expect(result).to eq 10
+    end
+
+    it 'requires threshold points or more to reconstruct' do
+      points = SecretSharing::Polynomial.points_from_secret(234234, 3, 4)
+      required_points = points[0, 3]
+      secret = SecretSharing::Polynomial.modular_lagrange_interpolation(required_points)
       expect(secret).to eq 234234
+
+      required_points = points[0, 4]
+      secret = SecretSharing::Polynomial.modular_lagrange_interpolation(required_points)
+      expect(secret).to eq 234234
+
+      required_points = points[0, 2]
+      secret = SecretSharing::Polynomial.modular_lagrange_interpolation(required_points)
+      expect(secret).not_to eq 234234
+
+      required_points = points[0, 1]
+      secret = SecretSharing::Polynomial.modular_lagrange_interpolation(required_points)
+      expect(secret).not_to eq 234234
     end
 
     it 'errors when the secret is to long' do
