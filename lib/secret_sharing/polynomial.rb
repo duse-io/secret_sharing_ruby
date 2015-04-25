@@ -118,7 +118,7 @@ module SecretSharing
     # inverse modulo
     def self.mod_inverse(k, prime)
       k = k % prime
-      r = egcd(prime, k.abs)[2]
+      r = egcd(prime, k.abs).last
       (prime + r) % prime
     end
 

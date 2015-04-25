@@ -142,4 +142,12 @@ RSpec.describe SecretSharing::Polynomial do
       )
     end
   end
+
+  describe '.egcd' do
+    context 'a=240 b=46' do
+      it 'returns a quotient of 2, s=-9 and t=47' do
+        expect(SecretSharing::Polynomial.egcd(240, 46)).to eq [2, -9, 47]
+      end
+    end
+  end
 end
