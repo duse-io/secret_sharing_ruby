@@ -28,8 +28,8 @@ Or install it yourself as:
 ## Implementation details
 
 This implementation of shamir's secret sharing has initially been developed to
-be used in [duse](https://duse.io/), however, it is designed to be used in any
-other context just as well.
+be used in [duse](https://github.com/duse-io/), however, it is designed to be
+used in any other context just as well.
 
 The representation of a share is simply `x-hex(y)`. We chose this
 representation, mainly to make it easier for this library to become compatible
