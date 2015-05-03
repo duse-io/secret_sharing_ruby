@@ -56,12 +56,13 @@ three.
 ## Usage
 
 	require 'secret_sharing'
-	shares = SecretSharing.split_secret('my secret', 2, 3)
+	shares = SecretSharing.split('my secret', 2, 3)
 	# => ["1-437b3d6cce8e7b77adb75", "2-86f673fa74e31127903f6", "3-ca71aa881b37a6d772c77"]
-	length = shares.length
-	# => 3
-	secret = SecretSharing.recover_secret(shares[0..1])
+	secret = SecretSharing.reconstruct(shares[0..1]) # two shares are enough to reconstruct!
 	# => 'my secret'
+
+[Further documentation on
+rubydoc](http://www.rubydoc.info/github/duse-io/secret_sharing_ruby/master/SecretSharing).
 
 ## Contributing
 
