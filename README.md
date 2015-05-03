@@ -9,7 +9,8 @@
 > **Warning:** This implementation has not been tested in production nor has it
 > been examined by a security audit. All uses are your own responsibility.
 
-A ruby implementation of shamir's secret sharing.
+A ruby implementation of [Shamir's Secret
+Sharing](http://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing).
 
 ## Installation
 
@@ -27,8 +28,8 @@ Or install it yourself as:
 
 ## Implementation details
 
-This implementation of shamir's secret sharing has initially been developed to
-be used in [duse](https://duse.io/), however, it is designed to be used in any
+This implementation of Shamir's Secret Sharing has initially been developed to
+be used in [duse](http://duse.io/), however, it is designed to be used in any
 other context just as well.
 
 The representation of a share is simply `x-hex(y)`. We chose this
