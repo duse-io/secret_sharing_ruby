@@ -5,41 +5,41 @@ RSpec.describe SecretSharing do
     50.times do
       secret = SecureRandom.base64(130)
       num_of_shares = 2 + SecureRandom.random_number(100)
-      shares = SecretSharing.split_secret(secret, 2, num_of_shares)
-      expect(SecretSharing.recover_secret(shares[0..1])).to eq(secret)
+      shares = SecretSharing.split(secret, 2, num_of_shares)
+      expect(SecretSharing.reconstruct(shares[0..1])).to eq(secret)
     end
   end
 
   context 'threshold 2 out of 4 shares' do
-    subject(:shares) { SecretSharing.split_secret('secret', 2, 4) }
+    subject(:shares) { SecretSharing.split('secret', 2, 4) }
 
     it 'generates 4 shares' do
       expect(shares.length). to eq 4
     end
 
     it 'cannot reconstruct with only one share' do
-      expect(SecretSharing.recover_secret(shares[0, 1])).not_to eq 'secret'
+      expect(SecretSharing.reconstruct(shares[0, 1])).not_to eq 'secret'
     end
 
     it 'can reconstruct the secret with any combination of 2 shares' do
       shares.permutation(2).each do |share_combination|
-        expect(SecretSharing.recover_secret(share_combination)).to eq 'secret'
+        expect(SecretSharing.reconstruct(share_combination)).to eq 'secret'
       end
     end
 
     it 'can reconstruct the secret with any combination of 3 shares' do
       shares.permutation(3).each do |share_combination|
-        expect(SecretSharing.recover_secret(share_combination)).to eq 'secret'
+        expect(SecretSharing.reconstruct(share_combination)).to eq 'secret'
       end
     end
 
     it 'can reconstruct the secret with all shares' do
-      expect(SecretSharing.recover_secret(shares)).to eq 'secret'
+      expect(SecretSharing.reconstruct(shares)).to eq 'secret'
     end
   end
 
   context 'threshold 2 out of 11 shares' do
-    subject(:shares) { SecretSharing.split_secret('secret', 2, 11) }
+    subject(:shares) { SecretSharing.split('secret', 2, 11) }
 
     it 'adds zero padding for shares 1 to 9' do
       shares[0, 9].each_with_index do |share, index|
