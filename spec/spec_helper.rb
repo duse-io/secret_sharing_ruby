@@ -56,7 +56,7 @@ RSpec.configure do |config|
   end
 
   config.around :each do |block|
-    Timeout.timeout(1, &block)
+    Timeout.timeout(5, &block)
   end
 
   config.order = :random

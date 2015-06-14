@@ -113,7 +113,7 @@ module SecretSharing
     # @param string [String] Character to retrieve the for codepoint
     # @return [TrueClass|FalseClass]
     def subset?(string)
-      (string.chars - charset).empty?
+      (Set.new(string.chars) - Set.new(charset)).empty?
     end
 
     # Charset that can represent any string that only consists of ASCII
