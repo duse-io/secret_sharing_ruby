@@ -1,6 +1,9 @@
 language: ruby
 rvm:
-- 2.2.2
+- ruby-head
+- jruby-head
+env:
+- JRUBY_OPTS="-Xcli.debug=true --debug"
 bundler_args: "--without development"
 cache: bundler
 sudo: false
