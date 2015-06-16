@@ -64,6 +64,13 @@ three.
 [Further documentation on
 rubydoc](http://www.rubydoc.info/github/duse-io/secret_sharing_ruby/master/SecretSharing).
 
+## Rubies
+
+Tested on
+
+* Ruby MRI
+* JRuby
+
 ## Contributing
 
 1. Fork it ( https://github.com/duse-io/secret_sharing_ruby/fork )
