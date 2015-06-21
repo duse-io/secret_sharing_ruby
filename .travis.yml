@@ -15,6 +15,9 @@ matrix:
 bundler_args: "--without development"
 cache: bundler
 sudo: false
+addons:
+  code_climate:
+    repo_token: 54a00c87d2ea1ab23262089465bc174c2aa96db287b488afb0061448f9cf1225
 deploy:
   provider: rubygems
   api_key:
