@@ -16,4 +16,6 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0")
   spec.test_files    = `git ls-files spec`.split($INPUT_RECORD_SEPARATOR)
   spec.require_paths = ['lib']
+
+  spec.add_dependency("electron-opal")
 end

@@ -6,6 +6,8 @@ group :test do
   gem 'rspec'
   gem 'simplecov', require: false
   gem 'codeclimate-test-reporter', require: false
+  gem 'opal-rspec'
+  gem 'opal', '~>0.9.0.dev', github: "jannishuebl/opal"
 end
 
 group :development do

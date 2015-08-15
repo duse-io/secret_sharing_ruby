@@ -104,9 +104,9 @@ describe 'SecretSharing::Charset::ASCIICharset' do
   end
 
   it 'supports all printable characters in ASCII' do
-    all_chars = " !\"#$%&'()*+,-./0123456789:;<=>?@" \
+    all_chars = " !\"$%&'()*+,-./0123456789:;<=>?@" \
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`" \
-                "abcdefghijklmnopqrstuvwxyz{|}~\n"
+                "abcdefghijklmnopqrstuvwxyz{|}~\n#"
     int = SecretSharing::Charset::ASCIICharset.s_to_i all_chars
     expect(SecretSharing::Charset::ASCIICharset.i_to_s(int)).to eq all_chars
   end

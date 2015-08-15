@@ -9,3 +9,11 @@ begin
 rescue LoadError
   puts 'rspec tasks could not be loaded'
 end
+
+require 'electron-opal'
+require 'opal-rspec'
+
+setup do | config |
+  config.paths << File.expand_path('../spec', __FILE__)
+  config.paths << File.expand_path('../lib', __FILE__)
+end
