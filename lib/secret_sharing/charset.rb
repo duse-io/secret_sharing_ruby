@@ -42,7 +42,7 @@ module SecretSharing
       output = ''
       while input > 0
         input, codepoint = input.divmod(charset.length)
-        output.prepend(codepoint_to_char(codepoint))
+        output = "#{codepoint_to_char(codepoint)}#{output}"
       end
       output
     end
