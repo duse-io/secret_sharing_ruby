@@ -20,16 +20,28 @@ module SecretSharing
       @y = y
     end
 
+    # Inspection of a point
+    #
+    # @return [String] Simple x, y representation
+    #
+    # Examples
+    # 
+    #   Point.new(1, 2).inspect
+    #   # => "<SecretSharing::Point @x=1, @y=2>"
+    def inspect
+      "<SecretSharing::Point @x=#{x} ,@y=#{y}>"
+    end
+
     # An implementation similar to Array#transpose for Arrays of Points
     #
-    # @return [Array] Two Arrays in an Array
+    # @param points [Array<Point>] Array of points to transpose
+    # @return [Array<Array<Integer>>] Two Arrays in an Array
     #
     # Examples
     #
     #   point1 = SecretSharing::Point.new(1, 2)
     #   point2 = SecretSharing::Point.new(3, 4)
-    #   points = [point1, point2]
-    #   Point.transpose(points)
+    #   Point.transpose [point1, point2]
     #   # => [[1, 3], [2, 4]]
     def self.transpose(points)
       x_values = []
@@ -39,6 +51,7 @@ module SecretSharing
         x_values << point.x
         y_values << point.y
       end
+
       [x_values, y_values]
     end
   end

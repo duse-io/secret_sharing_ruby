@@ -32,34 +32,25 @@ This implementation of Shamir's Secret Sharing has initially been developed to
 be used in [duse](http://duse.io/), however, it is designed to be used in any
 other context just as well.
 
-The representation of a share is simply `x-hex(y)`. We chose this
-representation, mainly to make it easier for this library to become compatible
-with other implementations, if we choose to.
+The representation of a share is simply a pair of integers represented as a
+`Point`. We chose to be unopionated in terms of a string representation of a
+share, mainly to make it easier for this library to become compatible with
+other implementations.
 
-For better approximation and equal length of the resulting shares, a zero
-padding has been added. For example, if there are ten or more shares, then all
-single digit shares have a prepending zero.
-
-* `01-574060c9`
-* `02-1fe7479f`
-* ...
-* `10-651e7e4b`
-
-Also, when generating a random polynomial, we make sure the coefficients are
-random, but never zero. If we would allow the coefficients to be zero, it could
-result in a lower threshold than intended. For example, if the threshold is
-three, then the degree of the polynomial would be two so in the form of
-`f(x)=a0 + a1*x + a2*x^2`. If `a2` would be zero than the polynomial would be
-of dergree one, which would result in a real threshold of two rather than
-three.
+When generating a random polynomial, we make sure the coefficients are random,
+but never zero. If we would allow the coefficients to be zero, it could result
+in a lower threshold than intended. For example, if the threshold is three,
+then the degree of the polynomial would be two so in the form of `f(x)=a0 +
+a1*x + a2*x^2`. If `a2` would be zero than the polynomial would be of dergree
+one, which would result in a real threshold of two rather than three.
 
 ## Usage
 
-	require 'secret_sharing'
-	shares = SecretSharing.split('my secret', 2, 3)
-	# => ["1-437b3d6cce8e7b77adb75", "2-86f673fa74e31127903f6", "3-ca71aa881b37a6d772c77"]
-	secret = SecretSharing.reconstruct(shares[0..1]) # two shares are enough to reconstruct!
-	# => 'my secret'
+	require "secret_sharing"
+	shares = SecretSharing.split("my secret", 2, 3)
+	# => [<SecretSharing::Point @x=1, @y=5098750880207642474240885>, <SecretSharing::Point @x=2, @y=10197493837875874270610422>, <SecretSharing::Point @x=3, @y=15296236795544106066979959>]
+	secret = SecretSharing.combine(shares[0..1]) # two shares are enough to reconstruct!
+	# => "my secret"
 
 [Further documentation on
 rubydoc](http://www.rubydoc.info/github/duse-io/secret_sharing_ruby/master/SecretSharing).
