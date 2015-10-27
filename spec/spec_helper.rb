@@ -17,19 +17,19 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-unless ENV['CI']
-  require 'simplecov'
+unless ENV["CI"]
+  require "simplecov"
   SimpleCov.start
 end
 
-if ENV['CI']
-  require 'codeclimate-test-reporter'
+if ENV["CI"]
+  require "codeclimate-test-reporter"
   CodeClimate::TestReporter.start
 end
 
-require 'timeout'
+require "timeout"
 
-require 'secret_sharing'
+require "secret_sharing"
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate

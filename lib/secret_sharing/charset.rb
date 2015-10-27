@@ -1,4 +1,4 @@
-require 'set'
+require "set"
 
 module SecretSharing
   # Charset can represent any charset which does not have the null byte
@@ -15,7 +15,7 @@ module SecretSharing
     #
     # Example
     #
-    #   SecretSharing::Charset::DynamicCharset.new ['a', 'b', 'c'] # =>
+    #   SecretSharing::Charset::DynamicCharset.new ["a", "b", "c"] # =>
     #   #<SecretSharing::Charset::DynamicCharset @charset=[...]>
     #
     # @param charset [Array] array of characters to use for the charset.
@@ -28,7 +28,7 @@ module SecretSharing
     #
     # Example
     #
-    #   charset = SecretSharing::Charset.by_charset_string 'abc'
+    #   charset = SecretSharing::Charset.by_charset_string "abc"
     #   charset.i_to_s 6
     #   # => "ab"
     #
@@ -36,10 +36,10 @@ module SecretSharing
     # @return [String] converted string
     def i_to_s(input)
       if !input.is_a?(Integer) || input < 0
-        fail NotPositiveInteger, 'input must be a non-negative integer'
+        fail NotPositiveInteger, "input must be a non-negative integer"
       end
 
-      output = ''
+      output = ""
       while input > 0
         input, codepoint = input.divmod(charset.length)
         output.prepend(codepoint_to_char(codepoint))
@@ -51,7 +51,7 @@ module SecretSharing
     #
     # Example
     #
-    #   charset = SecretSharing::Charset.by_charset_string 'abc'
+    #   charset = SecretSharing::Charset.by_charset_string "abc"
     #   charset.s_to_i "ab"
     #   # => 6
     #
@@ -68,7 +68,7 @@ module SecretSharing
     #
     # Example
     #
-    #   charset = SecretSharing::Charset.by_charset_string 'abc'
+    #   charset = SecretSharing::Charset.by_charset_string "abc"
     #   charset.codepoint_to_char 1
     #   # => "a"
     #
@@ -86,8 +86,8 @@ module SecretSharing
     #
     # Example
     #
-    #   charset = SecretSharing::Charset.by_charset_string 'abc'
-    #   charset.char_to_codepoint 'a'
+    #   charset = SecretSharing::Charset.by_charset_string "abc"
+    #   charset.char_to_codepoint "a"
     #   # => 1
     #
     # @param c [String] Character to retrieve its codepoint in the charset
@@ -104,10 +104,10 @@ module SecretSharing
     #
     # Example
     #
-    #   charset = SecretSharing::Charset.by_charset_string 'abc'
-    #   charset.subset? 'd'
+    #   charset = SecretSharing::Charset.by_charset_string "abc"
+    #   charset.subset? "d"
     #   # => false
-    #   charset.subset? 'a'
+    #   charset.subset? "a"
     #   # => true
     #
     # @param string [String] Character to retrieve the for codepoint

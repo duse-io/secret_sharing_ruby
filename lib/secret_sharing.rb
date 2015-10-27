@@ -1,9 +1,9 @@
-require 'secret_sharing/version'
-require 'secret_sharing/point'
-require 'secret_sharing/polynomial'
-require 'secret_sharing/prime'
-require 'secret_sharing/charset'
-require 'secret_sharing/share'
+require "secret_sharing/version"
+require "secret_sharing/point"
+require "secret_sharing/polynomial"
+require "secret_sharing/prime"
+require "secret_sharing/charset"
+require "secret_sharing/share"
 
 # A ruby implementation of Shamir's Secret Sharing. This module is the only
 # connection to be consumed by a user. Do not use any other class/module of
@@ -15,7 +15,7 @@ module SecretSharing
   #
   # Example
   #
-  #   SecretSharing.split('secret', 2, 3)
+  #   SecretSharing.split("secret", 2, 3)
   #   # => ["1-1e489c32507823aa", "2-1c9134c644739461", "3-1ad9cd5a386f0518"]
   #
   # @param secret_string [String] Secret to split.

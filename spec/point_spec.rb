@@ -1,14 +1,14 @@
 RSpec.describe SecretSharing::Point do
-  describe '#initialize' do
-    it 'sets the coordinates correctly' do
+  describe "#initialize" do
+    it "sets the coordinates correctly" do
       point = SecretSharing::Point.new(1, 2)
       expect(point.x).to be 1
       expect(point.y).to be 2
     end
   end
 
-  describe '.transpose' do
-    it 'returns an array consisting of two further arrays' do
+  describe ".transpose" do
+    it "returns an array consisting of two further arrays" do
       result = SecretSharing::Point.transpose []
       expect(result).to be_an Array
       expect(result.length).to be 2
@@ -16,7 +16,7 @@ RSpec.describe SecretSharing::Point do
       expect(result.last).to be_an Array
     end
 
-    it 'puts all x values in the first and all y values in the second array' do
+    it "puts all x values in the first and all y values in the second array" do
       result = SecretSharing::Point.transpose([
         SecretSharing::Point.new(1, 2),
         SecretSharing::Point.new(3, 4),

@@ -27,7 +27,7 @@ module SecretSharing
     #   # => "1-2"
     #
     def to_s(x_length)
-      "#{point.x.to_s.rjust(x_length, '0')}-#{point.y.to_s(16)}"
+      "#{point.x.to_s.rjust(x_length, "0")}-#{point.y.to_s(16)}"
     end
 
     # Creates a share object from its string representation.
@@ -40,7 +40,7 @@ module SecretSharing
     # @param share_string [String]
     # @return [SecretSharing::Share] parsed share
     def self.from_string(share_string)
-      x_string, y_string = share_string.split '-'
+      x_string, y_string = share_string.split "-"
       point = Point.new x_string.to_i, y_string.to_i(16)
       new(point)
     end

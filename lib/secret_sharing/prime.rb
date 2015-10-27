@@ -20,7 +20,7 @@ module SecretSharing
       standard_primes.each do |prime|
         return prime if prime > input
       end
-      fail CannotFindLargeEnoughPrime, 'Input too large'
+      fail CannotFindLargeEnoughPrime, "Input too large"
     end
 
     private

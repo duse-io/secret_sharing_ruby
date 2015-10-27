@@ -1,4 +1,4 @@
-require 'securerandom'
+require "securerandom"
 
 module SecretSharing
   # The polynomial is used to represent the required random polynomials used in
@@ -20,7 +20,7 @@ module SecretSharing
     # @param coefficients [Array] an array of integers as the coefficients
     def initialize(coefficients)
       coefficients.each do |c|
-        not_an_int = 'One or more coefficents are not integers'
+        not_an_int = "One or more coefficents are not integers"
         fail ArgumentError, not_an_int unless c.is_a?(Integer)
       end
       @coefficients = coefficients
@@ -62,7 +62,7 @@ module SecretSharing
     # @param intercept [Integer] the y value for x=0
     # @param upper_bound [Integer] the highest value of a single coefficient
     def self.random(degree, intercept, upper_bound)
-      fail ArgumentError, 'Degree must be a non-negative number' if degree < 0
+      fail ArgumentError, "Degree must be a non-negative number" if degree < 0
 
       coefficients = (0...degree).reduce([intercept]) do |accumulator|
         accumulator << SecureRandom.random_number(upper_bound - 1) + 1
@@ -83,13 +83,13 @@ module SecretSharing
     # @return [Polynomial] the generated polynomial
     def self.points_from_secret(secret_int, point_threshold, num_points)
       prime = Prime.large_enough_prime(secret_int)
-      fail ArgumentError, 'Threshold must be at least 2' if point_threshold < 2
-      fail ArgumentError, 'Threshold must be less than the total number of points' if point_threshold > num_points
+      fail ArgumentError, "Threshold must be at least 2" if point_threshold < 2
+      fail ArgumentError, "Threshold must be less than the total number of points" if point_threshold > num_points
 
       polynomial = random(point_threshold - 1, secret_int, prime)
       polynomial.points(num_points, prime)
     rescue Prime::CannotFindLargeEnoughPrime
-      raise ArgumentError, 'Secret is too long'
+      raise ArgumentError, "Secret is too long"
     end
 
     # Modular lagrange interpolation
